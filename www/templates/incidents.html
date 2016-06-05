@@ -1,0 +1,71 @@
+<ion-view view-title="Incidents">
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-compose" ng-click="showIncident()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-search" ng-click="onSearch()"></button>
+    </ion-nav-buttons>
+    <div class="bar bar-subheader item-input-inset" ng-show="search">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search">
+        </label>
+        <button class="button button-assertive">
+            Submit
+        </button>
+    </div>
+    <ion-content ng-class="{'has-subheader':search}">
+        <div class="list card" ng-repeat="item in data.incidents">
+            <div class="item item-avatar rm-search" ng-class="item.doc.more? 'rm-search-more':''" on-tap="onTap(item)">
+                <p><b>INC:{{item.doc.incidentnumber}} / TASK:{{item.doc.tasknumber}}</b></p>
+                <p><b>Summary: </b>{{item.doc.summary}}</p>
+                <p><b>Notes: </b>{{item.doc.notes}} </p>
+                <p><b>Impact: </b>{{item.doc.impact}} </p>
+                <div style="white-space:nowrap;">
+                    <div style="width:50%; display:inline-block; white-space:normal;">
+                        <p><b>Status: </b>{{item.doc.status}}</p>
+                    </div>
+                    <div style="width:50%; display:inline-block; white-space:normal;">
+                        <p><b>Priority:</b> {{item.doc.priority}}</p>
+                    </div>
+                </div>
+                <p class="rm-ion-chevron-down"><i ng-class="item.doc.more? 'ion-chevron-up':'ion-chevron-down'"></i></p>
+            </div>
+            <div class="item item-body" ng-show="item.doc.more">
+                <div ng-repeat="wi in item.doc.workinfo">
+                    <p>{{wi.date | date:'dd/MM/yyyy HH:mm:ss a':EDT}}<i class="ion-chevron-right"></i>
+                        <br/>
+                        <b>{{wi.summary}}</b></br>
+                        {{wi.notes}}
+                    </p>
+                </div>
+            </div>
+            <div class="item item-body" ng-hide="item.doc.more">
+                <div ng-repeat="wisum in item.doc.workinfo|limitTo:1">
+                    <p>{{wisum.date | date:'dd/MM/yyyy HH:mm:ss a':EDT}} <i class="ion-chevron-right"></i>
+                        <br/> {{wisum.summary}}
+                    </p>
+                </div>
+                <a class="subdued" ng-click="onTap(item)">
+                    <i class="icon ion-more"></i>
+                </a>
+            </div>
+            <div>
+                <div class="item tabs tabs-secondary tabs-icon-left rm-tabs">
+                    <a class="tab-item" ng-click="emailIncident(item.doc)">
+                        <i class="icon ion-email rm-search-icon"></i> Email
+                    </a>
+                    <a class="tab-item" ng-click="">
+                        <i class="icon ion-share rm-search-icon"></i> Share
+                    </a>
+                    <a class="tab-item" ng-click="showIncident(item.doc)">
+                        <i class="icon ion-edit rm-search-icon"></i> Edit
+                    </a>
+                    <a class="tab-item" ng-click="addWorkInfo(item.doc)">
+                        <i class="icon ion-plus rm-search-icon"></i> Add
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,23 @@
+{
+    "checklist": [{ "title" : "Business Hours", "content":[
+            "Monitor Remedy at least 2 time per day for new tasks",
+            "Alert team lead when there is new task",
+            "Monitor synthetic monitoring and alert team lead if there are failure detected",
+            "Perform triage on the failure",
+            "Monitor group mailbox at least 2 per day"
+        ]},
+        { "title" : "Afterhours", "content" : [
+        	"Monitor synthetic monitoring records at least once, preferably every morning",
+        	"If receive alert from synthetic monitoring or manual monitoring , perform triage on failure",
+			"If a problem/real issue detected, raise an incident",
+			"If total outage or failure is wide-spread escalate to P2. Contact ASM/ESMC (see contact list) and try to get it escalated",
+			"If rejected, escalate to team lead/Belinda/Nish"
+		]},
+        { "title" : "Weekends", "content": [
+        	"If receive alert from synthetic monitoring or manual monitoring , perform triage on failure",
+			"If a problem/real issue detected, raise an incident",
+			"If total outage or failure is wide-spread escalate to P2. Contact ASM/ESMC (see contact list) and try to get it escalated",
+			"If rejected, escalate to team lead/Belinda/Nish"
+        ]}
+    ]
+}

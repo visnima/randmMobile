@@ -1,0 +1,34 @@
+<ion-modal-view class="rm-workinfo-modal">
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">{{data.incident.title}}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeWorkInfo()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form >
+        <ion-list>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Summary</span>
+            <textarea  style="height:60px;" placeholder="Summary" ng-model="data.workinfo.summary"></textarea>
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Notes</span>
+            <textarea  style="height:80px;" placeholder="Notes" ng-model="data.workinfo.notes"></textarea>
+          </label>
+          <!--<ion-item class="item item-input">
+            <button class="button button-small button" ng-click="showTags()">
+              Tags
+            </button>
+          </ion-item>-->
+        </ion-list>
+        <div class="popup-buttons">
+          <button class="button button-block button-positive" ng-click="closeWorkInfo()">Cancel</button>
+          <button class="button button-block button-positive" ng-click="closeWorkInfo(data.workinfo)">Save</button>
+        </div>
+        
+
+
+     </form>
+  </ion-content>
+</ion-modal-view>

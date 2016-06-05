@@ -1,0 +1,14 @@
+{
+  "name": "randmMobile",
+  "app_id": "a2d11515",
+  "gulpStartupTasks": [
+    "sass",
+    "concat-services",
+    "concat-controllers",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

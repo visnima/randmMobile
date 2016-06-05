@@ -1,0 +1,47 @@
+<ion-view view-title="Announcements">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon button-clear ion-more" ng-click="openPopover($event);"></button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="rm-background">
+        <div class="card rm-card">
+            <div class="item item-divider item-assertive">
+                EVTE - 3:30 PM
+            </div>
+            <div class="item item-text-wrap">
+                <p> Please be advised that ebMS3 services in ATO EVTE are currently unavailable. This is being investigated as a high priority. (Infra 1851506)
+            </div>
+        </div>
+        <div class="card rm-card reveal-animation" can-swipe="true" on-swipe="onSwipe()" ng-hide="checked">
+            <div class="item item-divider item-balanced ">
+                PROD2 AWS - 3:14 PM
+            </div>
+            <div class="item item-text-wrap">
+                <p>Servive restored. All servives are available.
+            </div>
+        </div>
+        <div class="card rm-card">
+            <div class="item item-divider item-energized">
+                PROD - 2:35 PM
+            </div>
+            <div class="item item-text-wrap">
+                <p>Please be advised that ebMS3 services in ATO PROD are currently running slow. Some transactions are timing out. This is being investigated as a high priority. (Infra 1851506)
+            </div>
+        </div>
+        <div class="card rm-card">
+            <div class="item item-text-wrap item-divider item-light">
+                PROD - 2016-05-10 07:00 AM - 05:00 PM
+            </div>
+            <div class="item item-text-wrap">
+                <p>Please be advised that ebMS3 services in ATO PROD are not available due to sxhedule Maintenance. (Infra 1851506)
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

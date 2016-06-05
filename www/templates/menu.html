@@ -1,0 +1,50 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-positive">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left">
+        <div class="item item-avatar rm-item-avatar-left">
+            <img src="{{user.photo}}">
+            <h2>{{user.name}}</h2>
+            <p>Online {{user.loginTime}}</p>
+        </div>
+        <ion-content class="rm-scroll-content">
+            <ion-list>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="activated" ng-click="login()">
+                    <i class="icon ion-log-in"></i>Login
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.dashboard">
+                    <i class="icon ion-monitor"></i>Dashboard
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.announcements">
+                    <i class="icon ion-speakerphone"></i>Announcements
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.incidents">
+                    <i class="icon ion-alert-circled"></i>Incidents
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.monitoring">
+                    <i class="icon ion-stats-bars"></i>Monitoring
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                    <i class="icon ion-android-notifications-none"></i>Notifications
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                    <i class="icon ion-android-bulb"></i>Knowledge Center
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                    <i class="icon ion-android-contacts"></i>Contacts
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                    <i class="icon ion-android-settings"></i>Setttings
+                </ion-item>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

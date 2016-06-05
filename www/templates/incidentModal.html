@@ -1,0 +1,100 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">{{data.incident.title}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeIncident()">Close</button>
+        </div>
+    </ion-header-bar>
+    <div class="bar bar-subheader">
+        <div class="button-bar">
+            <a class="button" ng-class="{'active':isincident}" ng-click="ontoggleincident(isincident)">Incident</a>
+            <a class="button" ng-class="{'active':!isincident}" ng-click="ontoggleincident(isincident)">Work info</a>
+        </div>
+    </div>
+    <ion-pane>
+        <ion-content class="has-header has-subheader rm-has-footer" ng-show="isincident">
+            <form>
+                <ion-list>
+                    <div ng-hide="assess">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Incident Nummber</span>
+                            <input type="text" placeholder="Incident Number" ng-model="data.incident.incidentnumber">
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Task Number (optional)</span>
+                            <input type="text" placeholder="Task Number" ng-model="data.incident.tasknumber">
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Summary</span>
+                            <textarea rows="1" placeholder="Incident summary or Issue" ng-model="data.incident.summary"></textarea>
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Notes</span>
+                            <textarea rows="3" placeholder="Incident notes or issue summary" ng-model="data.incident.notes"></textarea>
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Impact</span>
+                            <textarea rows="3" placeholder="Impact to the system" ng-model="data.incident.impact"></textarea>
+                        </label>
+                    </div>
+                    <div class="item item-divider" ng-click="onAssess()">
+                        <div>
+                            <div style="width:45%; display:inline-block; vertical-align: middle;">
+                                <p><b>Status: </b>{{data.incident.status}}</p>
+                            </div>
+                            <div style="width:45%; display:inline-block; vertical-align: middle;">
+                                <p><b>Priority:</b> {{data.incident.priority}}</p>
+                            </div>
+                            <div style="width:10%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess && 'Save' || 'Edit'}}</button></div>
+                        </div>
+                    </div>
+                    <div ng-show="assess">
+                        <div class="item item-divider">
+                            <b>Status</b> : {{ data.incident.status }}
+                        </div>
+                        <ion-radio ng-repeat="istatus in data.incidentStatusList" ng-value="istatus.value" ng-model="data.incident.status">
+                            {{ istatus.text }}
+                        </ion-radio>
+                        <div class="item item-divider">
+                            <b>Priority</b>: {{ data.incident.priority }}
+                        </div>
+                        <ion-radio ng-repeat="ipriority in data.incidentPriorityList" ng-value="ipriority.value" ng-model="data.incident.priority" name="server-side">
+                            {{ ipriority.text }}
+                        </ion-radio>
+                    </div>
+                    <!--<ion-item class="item item-input">
+            <button class="button button-small button" ng-click="showTags()">
+              Tags
+            </button>
+          </ion-item>-->
+                </ion-list>
+            </form>
+        </ion-content>
+        <ion-content class="has-header has-subheader has-footer" ng-hide="isincident">
+            <div class="button-bar">
+                <div class="button-bar">
+                    <a class="button button-clear icon-left ion-minus-circled button-assertive" ng-click="data.showDelete = !data.showDelete; data.showReorder = false"> Delete</a>
+                    <a class="button button-clear"></a>
+                    <a class="button button-clear icon-right ion-navicon button-positive" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">Reorder</a>
+                </div>
+            </div>
+            <ion-list show-delete="data.showDelete" show-reorder="data.showReorder" can-swipe="data.listCanSwipe">
+                <ion-item ng-repeat="item in data.incident.workinfo">
+                    <h2>{{item.summary}}</h2>
+                    <p>{{item.notes}}</p>
+                    <ion-option-button class="button-positive" ng-click="editWorkInfo(item)">
+                        Edit
+                    </ion-option-button>
+                    <ion-delete-button class="ion-minus-circled" ng-click="data.incident.workinfo.splice($index, 1)"></ion-delete-button>
+                    <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-pane>
+    <ion-footer-bar class="rm-popup-footer bar-light" ng-hide="assess">
+        <div class="rm-popup popup-buttons">
+            <button class="button button-block button-positive" ng-click="closeIncident()">Cancel</button>
+            <button class="button button-block button-positive" ng-click="closeIncident(data.incident)">Save</button>
+        </div>
+    </ion-footer-bar>
+</ion-modal-view>

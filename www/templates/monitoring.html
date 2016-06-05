@@ -1,0 +1,47 @@
+<ion-view view-title="Monitoring">
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider rm-item-divider item-button-right">
+                EVTE Monitoring
+                <button class="button button-clear button-positive" ng-click="toggleLine();">
+                    <i class="icon ion-arrow-swap"></i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="col-demo">
+                        <canvas id="base" class="chart-base" chart-type="type" chart-data="data" chart-labels="labels" chart-legend="true" chart-series="series"></canvas>
+                    </div>
+                </div>
+            </div>
+     </div>
+        <div class="card">
+            <div class="item item-divider rm-item-divider item-button-right">
+                PROD Monitoring
+                <button class="button button-clear button-positive" ng-click="togglePie();">
+                    <i class="icon ion-arrow-swap"></i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col col-80">
+                    <div class="col-demo">
+                        <canvas id="basep" class="chart-base" chart-type="typeP" chart-data="dataP" chart-labels="labelsP" chart-legend="true" chart-series="seriesP"></canvas>
+                    </div>
+                </div>
+                <div class="col col-20">
+                    <div class="list">
+                        <button class="button button-block button-small button-positive">
+                            SRP
+                        </button>
+                        <button class="button button-block button-small button-positive">
+                            BBRP
+                        </button>
+                        <button class="button button-block button-small button-positive">
+                            ALL
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
