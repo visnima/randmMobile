@@ -1,5 +1,5 @@
 <ion-view view-title="Monitoring">
-    <ion-content>
+    <!--<ion-content>
         <div class="card">
             <div class="item item-divider rm-item-divider item-button-right">
                 EVTE Monitoring
@@ -43,5 +43,34 @@
                 </div>
             </div>
         </div>
+    </ion-content>-->
+    <div class="bar bar-subheader">
+        <div class="button-bar">
+          <a class="button" ng-click="subsystem='SRP'" ng-class="{'active': subsystem =='SRP'}" >SRP</a>
+          <a class="button" ng-click="subsystem='BBRP'" ng-class="{'active': subsystem =='BBRP'}">BBRP</a>
+          <a class="button" ng-click="subsystem= undefined" ng-class="{'active': subsystem ==undefined}">ALL</a>
+        </div>
+    </div>
+    <ion-content class="has-subheader">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <ul class="list" >
+          <li ng-repeat="item in data.rows | orderBy:'-subsystem' | filter: subsystem" item="item">
+            <!--<ion-item ng-repeat="item in data.rows" item="item">-->
+                <a class="item item-icon-left" ui-sref="app.monitoringDetailsScroll({ scenarioName: item.key[0]})">
+                    <i class="icon" ng-class="{'ion-checkmark-circled balanced': item.value.status === 'PASSED', 'ion-close-circled assertive': item.value.status !== 'PASSED'}"></i>
+                    <H3>{{item.scenarioName}} - {{item.subsystem}}</H3>
+                    <p> {{item.value.transactionStartTime | date:'medium'}}</p>
+                    <p class="badge badge-light rm-item-badge"> {{item.value.responseTime}}</p>
+                </a>
+          </li>
+
+        <!--<ion-list>
+
+        </ion-list>-->
+        </ul>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="25%" icon="ion-loading-c">
+            <ion-spinner></ion-spinner>
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

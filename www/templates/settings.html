@@ -1,0 +1,18 @@
+<ion-view view-title="Settings">
+    <ion-content>
+        <div class="list card rm-settings" ng-show="user.login" >
+            <div class="item item-divider">
+                Notifications
+            </div>
+            <ion-toggle ng-model="push.evte" ng-change="pushNotificationChange('EVTE',push.evte)">
+                EVTE Notifications
+            </ion-toggle>
+            <ion-toggle ng-model="push.prod" ng-change="pushNotificationChange('PROD',push.prod)">
+                PROD Notifications
+            </ion-toggle>
+            <ion-toggle ng-model="push.share" ng-change="pushNotificationChange('SHARE',push.share)">
+                Collaborations
+            </ion-toggle>
+        </div>
+    </ion-content>
+</ion-view>

@@ -4,11 +4,11 @@
             <div class="item">
                 <a class="item item-avatar rm-dashboard-avatar rm-colour-blue" href="#">
                     <img src="img/randm-slate-blue.jpg">
-                    <h2>Gihan Kannangara</h2>
+                    <h2>{{data.dashboard.oncalluser}}</h2>
                     <p>I'm keeping an eye!.</p>
                 </a>
                 <a href="#" class="item item-icon-left">
-                    <i class="icon ion-sad"></i> Need Help with mocks
+                    <i class="icon ion-sad"></i> {{data.dashboard.oncallimotion}}
                 </a>
             </div>
         </div>
@@ -19,18 +19,18 @@
             <div class="item item-text-wrap">
                 <div class="row rm-dashboard-card rm-colour-purple">
                     <div class="col">
-                        <a class="tab-item tabs-icon-left tab-item-active">
-                            <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive">1</span></i>Notification
+                        <a class="tab-item tabs-icon-left" ui-sref="{{data.dashboard.evtestate.notifications? 'app.notifications':'.'}}">
+                            <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.notifications">{{data.dashboard.evtestate.notifications}}</span></i>Notification
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item">
-                            <i class="icon ion-android-warning"></i>Incident
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.incidents}" ui-sref="{{data.dashboard.evtestate.incidents?'app.incidents':'.'}}">
+                            <i class="icon ion-android-warning" ><span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.incidents">{{data.dashboard.evtestate.incidents}}</span></i>Incident
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item tab-item-active">
-                            <i class="icon ion-stats-bars"> <span class="rmbadge badge-assertive">3</span></i>Monitoring
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.monitoring}"  ui-sref="{{data.dashboard.evtestate.monitoring?'app.monitoring':'.'}}">
+                            <i class="icon ion-stats-bars"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.monitoring">{{data.dashboard.evtestate.monitoring}}</span></i>Monitoring
                         </a>
                     </div>
                 </div>
@@ -43,21 +43,20 @@
             <div class="item item-text-wrap">
                 <div class="row rm-dashboard-card rm-colour-teal">
                     <div class="col">
-                        <a class="tab-item tabs-icon-left">
-                            <i class="icon ion-android-notifications"> </i>Notification
+                        <a class="tab-item tabs-icon-left" ui-sref="{{data.dashboard.prodstate.notifications? 'app.notifications':'.'}}">
+                            <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.notifications">{{data.dashboard.pordtate.notifications}}</span></i>Notification
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item tab-item-active">
-                            <i class="icon ion-android-warning"> <span class="rmbadge badge-assertive">1</span></i>Incident
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.incidents}" ui-sref="{{data.dashboard.prodstate.incidents?'app.incidents':'.'}}">
+                            <i class="icon ion-android-warning" ><span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.incidents">{{data.dashboard.prodstate.incidents}}</span></i>Incident
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item">
-                            <i class="icon ion-stats-bars"> </i>Monitoring
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.monitoring}"  ui-sref="{{data.dashboard.prodstate.monitoring?'app.monitoring':'.'}}">
+                            <i class="icon ion-stats-bars"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.monitoring">{{data.dashboard.prodstate.monitoring}}</span></i>Monitoring
                         </a>
                     </div>
-                </div>
             </div>
         </div>
         <div class="card rm-bottom-card rm-wide-card">

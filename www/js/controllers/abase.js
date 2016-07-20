@@ -49,14 +49,27 @@ randmControllers.controller('AppCtrl', function($scope, $ionicModal, $timeout, $
         console.log("userProfile not defined");
         var user = {
             'name': "Anonymous",
-            'loginTime': "28-2 @ 3:30 pm",
-            'photo': "img/randm-slate-blue.jpg"
+            'loginTime': new Date(),
+            'photo': "img/randm-slate-blue.jpg",
+            'email': "",
+            'account': "",
+            'login': false
         };
     } else {
-
+        console.log("userProfile not defined");
+        var user = {
+            'name': "Anonymous",
+            'loginTime': new Date(),
+            'photo': "img/randm-slate-blue.jpg",
+            'email': "",
+            'account': "",
+            'login': false
+        };
     };
 
     $scope.user = user;
+
+
 });
 
 randmControllers.controller('PlaylistsCtrl', function($scope) {

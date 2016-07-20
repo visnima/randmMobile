@@ -7,19 +7,24 @@
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear ion-more" ng-click="openPopover($event);"></button>
+            <!--<button class="button button-icon button-clear ion-more" ng-click="openPopover($event);"></button>-->
+            <button class="button button-icon icon ion-compose" ng-click="showAnnouncement()"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
+
+    
     <ion-content class="rm-background">
-        <div class="card rm-card">
-            <div class="item item-divider item-assertive">
-                EVTE - 3:30 PM
+        <div class="card rm-card" ng-repeat="item in data.announcements">
+            <div class="item item-divider" ng-class="{'item-assertive':item.doc.severity == 'High','item-energized':item.doc.severity == 'Medium'}">
+                {{item.doc.title}}
+                {{item.doc.severity}}
             </div>
             <div class="item item-text-wrap">
                 <p> Please be advised that ebMS3 services in ATO EVTE are currently unavailable. This is being investigated as a high priority. (Infra 1851506)
+                <p><strong> {{item.doc.user}} - {{item.doc.lastmodified|date:'MM/dd/yyyy @ h:mma'}}</strong>
             </div>
         </div>
-        <div class="card rm-card reveal-animation" can-swipe="true" on-swipe="onSwipe()" ng-hide="checked">
+        <!--<div class="card rm-card reveal-animation" can-swipe="true" on-swipe="onSwipe()" ng-hide="checked">
             <div class="item item-divider item-balanced ">
                 PROD2 AWS - 3:14 PM
             </div>
@@ -42,6 +47,6 @@
             <div class="item item-text-wrap">
                 <p>Please be advised that ebMS3 services in ATO PROD are not available due to sxhedule Maintenance. (Infra 1851506)
             </div>
-        </div>
+        </div>-->
     </ion-content>
 </ion-view>

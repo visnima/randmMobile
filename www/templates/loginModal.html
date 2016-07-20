@@ -1,11 +1,16 @@
-<ion-view view-title="Login">
+<ion-modal-view>
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">Login</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">Close</button>
+        </div>
+    </ion-header-bar>
     <ion-content>
         <ion-content class="rm-background">
             <div class="row row-center rm-background rm-login">
                 <div class="col">
                     <div class="rm-login"><img src="img/randm-slate-blue.jpg">
                     <h3>R & M Support</h3>
-                    <div class="item item-assertive animate-show" ng-show="!loginSuccess">Failed login</div>
                     <h4>Sign in with your Google or Facebook Account</h4>
                     </div>
                     <div class="list">
@@ -19,4 +24,4 @@
             </div>
         </ion-content>
     </ion-content>
-</ion-view>
+</ion-modal-view>

@@ -1,0 +1,24 @@
+<ion-view view-title={{title}}>
+    <ion-content>
+        <ul class="list">
+            <label class="item item-input">
+                <span class="input-label">Date</span>
+                <input type="date" name="searchDateInput" placeholder="yyyy-MM-dd" ng-model="detailsview.searchDate" ng-change="dateChange()">
+            </label>
+            <div>
+                <div class="item item-assertive animate-show" ng-hide="detailsview.searchDateOK">
+                <!--<span  class="icon ion-thumbsdown" ></span>--> Please check your selected date.
+                </div>
+            </div>
+            <li ng-repeat="item in items" item="item">
+                <a class="item item-icon-left" href="">
+                    <i class="icon" ng-class="{'ion-checkmark-circled balanced': item.doc.status === 'PASSED', 'ion-close-circled assertive': item.doc.status !== 'PASSED'}"></i> {{item.doc.transactionStartTime | date:'medium'}}
+                    <H4> {{item.doc.scenarioName}}</H4>
+                    <p class="badge badge-light rm-item-badge"> {{item.doc.responseTime}}</p>
+                </a>
+            </li>
+        </ul>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="25%" use-content="true">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

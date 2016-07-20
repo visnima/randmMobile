@@ -343,3 +343,28 @@
 .rm-wide-card {
     margin: 10px 5px;
 }
+
+.rm-settings .item-divider{
+    background-color: #5596E6;
+    color:#fff;
+}
+.rm-settings .item-toggle {
+    background-color: #4178bE;
+    color: #fff;
+}
+
+.rm-settings .toggle .handle {
+    background-color: #d74108;
+}
+
+.rm-settings .toggle-small .track {
+    background: #f5f5f5 none repeat scroll 0 0;
+}
+
+.rm-settings .toggle-small input:checked + .track .handle {
+    background: #4cd964 none repeat scroll 0 0;
+}
+
+.rm-settings .toggle-small input:checked + .track {
+    background: #f5f5f5 none repeat scroll 0 0;
+}

@@ -10,5 +10,15 @@
   "watchPatterns": [
     "www/**/*",
     "!www/lib/**/*"
+  ],
+  "proxies": [
+    {
+      "path": "/healthcheck/api",
+      "proxyUrl": "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/result/_design/views"
+    },
+    {
+      "path": "/push/api",
+      "proxyUrl": "http://imfpush.ng.bluemix.net/imfpush/v1/apps"
+    }
   ]
 }

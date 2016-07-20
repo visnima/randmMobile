@@ -1,17 +1,17 @@
-randmServices.factory('incidentDataService', function($http) {
+randmServices.factory('announcementDataService', function($http) {
 
-    var incidents;
+    var announcement;
 
     return {
         query: function() {
-            return $http.get('appdata/mock_incident.json').then(function(response) {
+            return $http.get('appdata/mock_announcements.json').then(function(response) {
                 console.log('Success', JSON.stringify(response));
-                incidents = response.data;
-                return incidents;
+                announcements = response.data;
+                return announcements;
             }, function(err) {
                 console.error('ERR', err);
                 // err.status will contain the status code
             });
         }
     }
-})
+});

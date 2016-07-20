@@ -14,35 +14,38 @@
         <div class="item item-avatar rm-item-avatar-left">
             <img src="{{user.photo}}">
             <h2>{{user.name}}</h2>
-            <p>Online {{user.loginTime}}</p>
+            <p>Online {{user.loginTime|date:'dd/MM @ h:mma'}}</p>
         </div>
         <ion-content class="rm-scroll-content">
             <ion-list>
-                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="activated" ng-click="login()">
+                <ion-item menu-toggle class="item-icon-left rm-menu-item" ng-hide="user.login" ui-sref-active="current" ui-sref="app.login">
                     <i class="icon ion-log-in"></i>Login
+                </ion-item>
+                <ion-item menu-close class="item-icon-left rm-menu-item" ng-show="user.login" ui-sref-active="current" ui-sref="app.logout">
+                    <i class="icon ion-log-out"></i>Logout
                 </ion-item>
                 <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.dashboard">
                     <i class="icon ion-monitor"></i>Dashboard
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.announcements">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.announcements">
                     <i class="icon ion-speakerphone"></i>Announcements
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.incidents">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ng-show="user.login" ui-sref-active="current" ui-sref="app.incidents">
                     <i class="icon ion-alert-circled"></i>Incidents
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref="app.monitoring">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.monitoring">
                     <i class="icon ion-stats-bars"></i>Monitoring
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ng-show="user.login" ui-sref-active="current" ui-sref="app.notifications">
                     <i class="icon ion-android-notifications-none"></i>Notifications
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ng-show="user.login" ui-sref-active="current" ui-sref="app.knowledgeCenter">
                     <i class="icon ion-android-bulb"></i>Knowledge Center
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.contacts">
                     <i class="icon ion-android-contacts"></i>Contacts
                 </ion-item>
-                <ion-item menu-close class="item-icon-left rm-menu-item" href="#/app/playlists">
+                <ion-item menu-close class="item-icon-left rm-menu-item" ui-sref-active="current" ui-sref="app.settings">
                     <i class="icon ion-android-settings"></i>Setttings
                 </ion-item>
         </ion-content>

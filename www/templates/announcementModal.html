@@ -1,0 +1,85 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Create Announcement</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeAnnouncement()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form>
+      <ion-list>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Title</span>
+            <textarea  style="height:35px;" placeholder="Title" ng-model="annoucementTitle"></textarea>
+          </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Announcement</span>
+            <textarea  style="height:100px;" placeholder="Announcement" ng-model="announcement"></textarea>
+          </label>
+       <!-- <div class="row">
+          <div class="col col-67">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Effective From Date</span>
+              <input type="date" name="searchDateInput" placeholder="YYYY-MM-DD" >
+              </label>
+          </div>
+          <div class="col">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Time</span>
+              <input type="time" name="searchTimeInput" placeholder="HH:MM" >
+          </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-67">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Effective To Date</span>
+              <input type="date" name="searchDateInput" placeholder="YYYY-MM-DD" >
+              </label>
+          </div>
+          <div class="col">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Time</span>
+              <input type="time" name="searchTimeInput" placeholder="HH:MM" >
+          </label>
+          </div>
+        </div>-->
+                    <div class="item item-divider" ng-click="onAssess()">
+                        <div>
+                            <div style="width:45%; display:inline-block; vertical-align: middle;">
+                                <p><b>Status: </b>{{data.annoucement.status}}</p>
+                            </div>
+                            <div style="width:45%; display:inline-block; vertical-align: middle;">
+                                <p><b>Environment:</b> {{data.annoucement.env}}</p>
+                            </div>
+                            <div style="width:10%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess && 'Save' || 'Edit'}}</button></div>
+                        </div>
+                    </div>
+                    <div ng-show="assess">
+                        <div class="item item-divider">
+                            <b>Status</b> : {{ data.annoucement.status }}
+                        </div>
+                        <ion-radio ng-repeat="astatus in data.statusList" ng-value="astatus.value" ng-model="data.annoucement.status">
+                            {{ astatus.text }}
+                        </ion-radio>
+                        <div class="item item-divider">
+                            <b>Environment</b>: {{ data.annoucement.env }}
+                        </div>
+                        <ion-radio ng-repeat="aenv in data.envList" ng-value="aenv.value" ng-model="data.annoucement.env" name="server-side">
+                            {{ aenv.text }}
+                        </ion-radio>
+                    </div>
+
+        <!--<ion-item class="item item-input">
+            <button class="button button-small button" ng-click="showTags()">
+              Tags
+            </button>
+          </ion-item>-->
+      </ion-list>
+      <div class="popup-buttons">
+        <button class="button button-block button-positive" ng-click="closeAnnouncement()">Cancel</button>
+        <button class="button button-block button-positive" ng-click="saveAnnouncement()">Save</button>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

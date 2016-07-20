@@ -1,0 +1,24 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">{{data.share.title}}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeShare(data.share.item)">Close</button>
+    </div>
+  </ion-header-bar>
+         
+    <ion-content>
+      
+      <div class="list">
+        
+        <ion-checkbox ng-repeat="item in data.share.userlist" ng-model="item.checked" ng-checked="item.checked">
+          {{ item.userId }}
+        </ion-checkbox>
+
+        <div class="popup-buttons">
+          <button class="button button-block button-positive" ng-click="share(data.share.item)">Share</button>
+        </div>
+        
+      </div>
+      
+    </ion-content>
+</ion-modal-view>

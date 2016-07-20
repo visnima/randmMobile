@@ -1,0 +1,35 @@
+[
+    {
+        "doc": {
+            "title": "EVTE unavailable",
+            "announcemnt": "Please be advised that ebMS3 services in ATO EVTE are currently unavailable. This is being investigated as a high priority. (Infra 1851506)",
+            "env": "EVTE",
+            "severity":"High",
+            "user": "Gihan Kannangara",
+            "lastmodified": "2016-01-11T10:15:49.504Z",
+            "status": "active"
+        }
+    },
+    {
+        "doc": {
+            "title": "PROD Running slow",
+            "announcemnt": "Please be advised that ebMS3 services in ATO PROD are currently running slow. Some transactions are timing out. This is being investigated as a high priority. (Infra 1851506)",
+            "env": "PROD",
+            "severity":"Medium",
+            "user": "Gihan Kannangara",
+            "lastmodified": "2016-01-11T10:15:49.504Z",
+            "status": "active"
+        }
+    },
+    {
+        "doc": {
+            "title": "PROD Schedule Maintenance",
+            "announcemnt": "Please be advised that ebMS3 services in ATO PROD are not available due to schedule Maintenance. (Infra 1851506)",
+            "env": "PROD",
+            "severity":"Low",
+            "user": "Gihan Kannangara",
+            "lastmodified": "2016-01-11T10:15:49.504Z",
+            "status": "active"
+        }
+    }
+]
