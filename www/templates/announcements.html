@@ -1,20 +1,12 @@
 <ion-view view-title="Announcements">
-    <ion-nav-bar class="bar-positive">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-            </button>
-        </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <!--<button class="button button-icon button-clear ion-more" ng-click="openPopover($event);"></button>-->
-            <button class="button button-icon icon ion-compose" ng-click="showAnnouncement()"></button>
+            <button class="button button-icon icon ion-compose" ng-show="user.login" ng-click="showAnnouncement()"></button>
         </ion-nav-buttons>
-    </ion-nav-bar>
 
-    
     <ion-content class="rm-background">
-        <div class="card rm-card" ng-repeat="item in data.announcements">
+        <ion-refresher pulling-text="Pull to refresh..." refreshing-text="Retrieving Announcements!" on-refresh="doRefresh()"></ion-refresher>
+        <div class="card rm-card" ng-repeat="item in data.announcements" on-double-tap="showAnnouncement(item.doc)">
             <div class="item item-divider" ng-class="{'item-assertive':item.doc.severity == 'High','item-energized':item.doc.severity == 'Medium'}">
                 {{item.doc.title}}
                 {{item.doc.severity}}

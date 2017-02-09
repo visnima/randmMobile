@@ -1,11 +1,15 @@
-<ion-view view-title="Notifications">
-  <ion-content>
-    <div class="list list-inset">
-      <a class="item item-icon-left item-icon-right" href="#">
-        <i class="icon ion-alert-circled energized"></i>
-        <h2>We are working on this!...</h2>
-        <p>Target release: Beta</p>
-        <p>List of notifications</p>
-      </a>
-  </ion-content>
+<ion-view view-title="Notification Subscriptions">
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="list card rm-settings" ng-show="user.login" >
+            <div class="item item-divider">
+                Notifications
+            </div>
+            <ion-toggle ng-repeat="push in subscriptions" ng-model="push.subscribed" ng-change="pushNotificationChange(push.name, push.subscribed)">
+               {{push.name}}<br/>
+               <small>{{push.description}}</small>
+            </ion-toggle>
+        </div>
+    </ion-content>
 </ion-view>

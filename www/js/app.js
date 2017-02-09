@@ -78,8 +78,17 @@ randmMobile.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+        .state('app.monitoringSummary', {
+            url: '/monitoringSummary',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/monitoringSummary.html',
+                    controller: 'MonitoringSummaryCtrl'
+                }
+            }
+        })
         .state('app.monitoring', {
-            url: '/monitoring',
+            url: '/monitoring:env',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/monitoring.html',
@@ -97,7 +106,7 @@ randmMobile.config(function($stateProvider, $urlRouterProvider) {
             }
         })
         .state('app.incidents', {
-            url: '/incidents:incidentId',
+            url: '/incidents/:incidentId',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/incidents.html',
@@ -110,7 +119,7 @@ randmMobile.config(function($stateProvider, $urlRouterProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/notifications.html',
-                    controller: 'NotificationCtrl'
+                    controller: 'NotificationsCtrl'
                 }
             }
         })
@@ -124,7 +133,7 @@ randmMobile.config(function($stateProvider, $urlRouterProvider) {
             }
         })
         .state('app.contacts', {
-            url: '/contacts',
+            url: '/contacts:incidentId',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/contacts.html',

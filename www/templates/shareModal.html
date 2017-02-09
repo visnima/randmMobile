@@ -11,7 +11,7 @@
       <div class="list">
         
         <ion-checkbox ng-repeat="item in data.share.userlist" ng-model="item.checked" ng-checked="item.checked">
-          {{ item.userId }}
+          {{ data.deviceusers[item.deviceId] }}
         </ion-checkbox>
 
         <div class="popup-buttons">

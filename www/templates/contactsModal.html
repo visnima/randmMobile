@@ -1,0 +1,15 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">Contacts</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeContacts()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list card rm-contacts">
+            <a class="item item-icon-left" ng-repeat="item in data.contacts" href="tel:item.phone" ng-click="onSelect(item)">
+                <i class="icon ion-ios-telephone"></i> {{item.name}} <p> {{item.phone}} </p>
+            </a>
+        </div>
+    </ion-content>
+</ion-modal-view>

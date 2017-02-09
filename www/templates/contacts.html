@@ -1,21 +1,9 @@
 <ion-view view-title="Contacts">
     <ion-content>
-        <div class="list">
-            <a class="item item-icon-left" href="#">
-                <i class="icon ion-email"></i> Check mail
-            </a>
-            <a class="item item-icon-left" href="whatsapp://send?text=Test 1">
-                <i class="icon ion-social-whatsapp-outline"></i> Chat
-            </a>
-            <a class="item item-icon-left item-icon-right" href="#">
-                <i class="icon ion-chatbubble-working"></i> Call Ma
-                <i class="icon ion-ios-telephone-outline"></i>
-            </a>
-            <a class="item item-icon-left" href="#">
-                <i class="icon ion-mic-a"></i> Record album<span class="item-note">Grammy</span></a>
-            <a class="item item-icon-left" href="#">
-                <i class="icon ion-person-stalker"></i> Friends
-                <span class="badge badge-assertive">0</span>
+        <ion-refresher pulling-text="Pull to refresh..." refreshing-text="Retrieving contacts!" on-refresh="doRefresh()"></ion-refresher>
+        <div class="list card rm-contacts">
+            <a class="item item-icon-left" ng-repeat="item in data.contacts" name="{{item.phone}}" ng-click="onSelect(item)">
+                <i class="icon ion-ios-telephone"></i> {{item.doc.name}} <p> {{item.doc.phone}} </p>
             </a>
         </div>
     </ion-content>

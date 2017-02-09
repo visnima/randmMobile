@@ -1,18 +1,26 @@
 <ion-view view-title="Settings">
-    <ion-content>
-        <div class="list card rm-settings" ng-show="user.login" >
-            <div class="item item-divider">
-                Notifications
-            </div>
-            <ion-toggle ng-model="push.evte" ng-change="pushNotificationChange('EVTE',push.evte)">
-                EVTE Notifications
-            </ion-toggle>
-            <ion-toggle ng-model="push.prod" ng-change="pushNotificationChange('PROD',push.prod)">
-                PROD Notifications
-            </ion-toggle>
-            <ion-toggle ng-model="push.share" ng-change="pushNotificationChange('SHARE',push.share)">
-                Collaborations
-            </ion-toggle>
+  <ion-content>
+    <div class="list card">
+      <div class="item item-divider">
+        Auto Refresh Settings
+      </div>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Auto Refresh Interval (Minutes)
         </div>
-    </ion-content>
+        <select name="AutoRefreshInterval" id="AutoRefreshInterval" ng-model="data.autoRefreshInterval" ng-change="onChangeRefreshInterval()">
+          <option ng-repeat="item in data.refreshIntervalSelect" value="{{item.value}}" >{{item.text}}</option>
+        </select>
+      </label>
+      <label class="item item-input item-select">
+        <div class="input-label">
+         Auto Refresh Count
+        </div>
+        <select name="AutoRefreshCount"  id="AutoRefreshCount" ng-model="data.autoRefreshCount" ng-change="onChangeRefreshCount()">
+          <option ng-repeat="item in data.refreshCountSelect" value="{{item.value}}">{{item.text}}</option>
+        </select>
+      </label>
+   </div>
+
+  </ion-content>
 </ion-view>

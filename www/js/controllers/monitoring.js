@@ -1,5 +1,21 @@
-randmControllers.controller("MonitoringCtrl", function($scope, monitoringService, $ionicLoading, MonitoringTests) {
+randmControllers.controller("MonitoringSummaryCtrl", function($scope, $state, monitoringService, $ionicLoading, MonitoringTests) {
+    console.log("MonitoringSummaryCtrl");
+
+    $scope.monitoringresults = monitoringService.getMonitoringResults();
+ 
+    $scope.doRefresh = function() {
+          monitoringService.query().finally(function(){
+              $scope.$broadcast('scroll.refreshComplete');
+          });
+    };
+
+
+});
+
+randmControllers.controller("MonitoringCtrl", function($scope, $state, $stateParams, monitoringService, $ionicLoading, MonitoringTests) {
     console.log("MonitoringCtrl");
+    console.log("env :"+ $stateParams.env);
+
     /*    $scope.activeButton = 'ALL';
 
         $scope.type = "Line";
@@ -65,45 +81,25 @@ randmControllers.controller("MonitoringCtrl", function($scope, monitoringService
             $scope.dataP = [300, 300, 200, 400];
         };*/
 
-    $ionicLoading.show();
-
+    //$ionicLoading.show();
+    $scope.data = {};
     $scope.doRefresh = function() {
-        monitoringService.query().then(function(responseData) {
-            console.log("refresh");
-            var row;
-            $scope.data = responseData.data;
-            for (row in $scope.data.rows) {
-                //console.log("Row key : " + $scope.data.rows[row].key);
-                // Convert scenarios to english names if they exist
-                var scenarioName = $scope.data.rows[row].key;
-                if (MonitoringTests.hasOwnProperty(scenarioName)) {
-                    $scope.data.rows[row].scenarioName = MonitoringTests[scenarioName].name;
-                    $scope.data.rows[row].subsystem = MonitoringTests[scenarioName].subsystem;
-                } 
-                else {
-                    $scope.data.rows[row].scenarioName = scenarioName;
-                }
-                //console.log("Row new name : " + $scope.data.rows[row].scenarioName);
-                //console.log("Row subsystem: " +$scope.data.rows[row].subsystem);
-                if ($scope.data.rows[row].value.responseTime === '0') {
-                    $scope.data.rows[row].value.responseTime = "-";
-                }
-                $scope.data.rows[row].value.transactionStartTime = new Date($scope.data.rows[row].value.transactionStartTime);
-            }
 
-        }).catch(function(err) {
-            console.error('ERR', JSON.stringify(err));
+          console.log("Env:" + $stateParams.env);
+          $scope.data.rows = monitoringService.getMonitoringResults()[$stateParams.env].items;
+          //console.log("monitoring - details : " + JSON.stringify($scope.data.rows));
+          if ($scope.data.rows.length == 0) {
+              monitoringService.query().finally(function(){
+                  $scope.$broadcast('scroll.refreshComplete');
+              });
+          }
+          else {
+              $scope.$broadcast('scroll.refreshComplete');
+          }
 
-        }).finally(function() {
-            console.log("finally");
-            $ionicLoading.hide();
-            // Stop the ion-refresher from spinning
-            $scope.$broadcast('scroll.refreshComplete');
-        });
     };
 
     $scope.doRefresh();
-    console.log($scope.data);
 
     $scope.onTapSenario = function(item) {
         console.log("onTapSenario");
@@ -111,7 +107,6 @@ randmControllers.controller("MonitoringCtrl", function($scope, monitoringService
 
 
 });
-
 
 randmControllers.controller('MonitoringDetailsScrollCtr', function($scope, monitoringDetailDataService, $stateParams) {
 
@@ -171,7 +166,7 @@ randmControllers.controller('MonitoringDetailsScrollCtr', function($scope, monit
                             return (a.doc.transactionStartTime - b.doc.transactionStartTime);
                         });
                         responseData.data.rows = responseData.data.rows.reverse();
-                        console.log('responseData.data.rows', JSON.stringify(responseData.data.rows));
+                        //console.log('responseData.data.rows', JSON.stringify(responseData.data.rows));
                     }
 
                     $scope.items = ($scope.items).concat(responseData.data.rows);

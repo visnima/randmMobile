@@ -1,4 +1,4 @@
-var randmServices = angular.module('randm.services', ['randm.constants']);
+var randmServices = angular.module('randm.services', ['randm.constants', 'randm.directives']);
 
 randmServices.factory('$localstorage', ['$window', function($window) {
     return {
@@ -16,16 +16,69 @@ randmServices.factory('$localstorage', ['$window', function($window) {
         }
     }
 }]);
-randmServices.factory('announcementDataService', function($http) {
+randmServices.factory('announcementDataService', function($http, AnnouncementsEndPoint) {
 
-    var announcement;
+    var announcement; 
+    var cloudantUserName = "aidepleveseariveracessed:13bacc0b3e1226e1a6f31d61f92b65c10b856a69";
 
     return {
+
         query: function() {
-            return $http.get('appdata/mock_announcements.json').then(function(response) {
-                console.log('Success', JSON.stringify(response));
-                announcements = response.data;
+            var req = {
+                method: 'GET',
+                url: AnnouncementsEndPoint.url + '/_all_docs?include_docs=true&conflicts=true',
+                
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic YWlkZXBsZXZlc2Vhcml2ZXJhY2Vzc2VkOjEzYmFjYzBiM2UxMjI2ZTFhNmYzMWQ2MWY5MmI2NWMxMGI4NTZhNjk="
+                },
+                timeout: 5000
+            };
+            return $http(req).then(function(response) {
+                console.log('Success - query Announcements :', JSON.stringify(response));
+                announcements = response.data.rows;
                 return announcements;
+            }, function(err) {
+                console.error('ERR - query Announcements :' + JSON.stringify(err));
+                return err;
+                // err.status will contain the status code
+            });
+        },
+        update: function(announcement) {
+            var req = {
+                method: 'PUT',
+                url: AnnouncementsEndPoint.url + '/' + announcement._id,
+                
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic YWlkZXBsZXZlc2Vhcml2ZXJhY2Vzc2VkOjEzYmFjYzBiM2UxMjI2ZTFhNmYzMWQ2MWY5MmI2NWMxMGI4NTZhNjk="
+                },
+                timeout: 5000,
+                data: announcement
+            };
+            return $http(req).then(function(response) {
+                console.log('Success', JSON.stringify(response));
+                return response;
+            }, function(err) {
+                console.error('ERR', err);
+                // err.status will contain the status code
+            });
+        },
+        create: function(announcement) {
+            var req = {
+                method: 'POST',
+                url: AnnouncementsEndPoint.url ,
+                
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic YWlkZXBsZXZlc2Vhcml2ZXJhY2Vzc2VkOjEzYmFjYzBiM2UxMjI2ZTFhNmYzMWQ2MWY5MmI2NWMxMGI4NTZhNjk="
+                },
+                timeout: 5000,
+                data: announcement
+            };
+            return $http(req).then(function(response) {
+                console.log('Success', JSON.stringify(response));
+                return response;
             }, function(err) {
                 console.error('ERR', err);
                 // err.status will contain the status code
@@ -33,26 +86,18 @@ randmServices.factory('announcementDataService', function($http) {
         }
     }
 });
-randmServices.factory('incidentDataService', function($http) {
+randmServices.factory('AuthenticationService', function($http, $location, $window, $q, $timeout) {
 
-    var incidents;
+    console.log('AuthenticationService'); 
 
-    return {
-        query: function() {
-            return $http.get('appdata/mock_incident.json').then(function(response) {
-                console.log('Success', JSON.stringify(response));
-                incidents = response.data;
-                return incidents;
-            }, function(err) {
-                console.error('ERR', err);
-                // err.status will contain the status code
-            });
-        }
-    }
-})
-randmServices.factory('loginService', function($http, $location, $window, $q, $timeout) {
-
-    console.log('loginService');
+    var deviceUser = {
+        name : "Anonymous",
+        loginTime : new Date(),
+        photo : "img/randm-slate-blue.jpg",
+        email : "",
+        account : "",
+        login : false
+    };
 
     if (!String.prototype.startsWith) {
         String.prototype.startsWith = function(searchString, position) {
@@ -106,10 +151,15 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
                                 'Authorization': 'Bearer ' + data.data.access_token
                             }
                         };
-                        $http(req).then(function(data) {
-                            console.log("Success - profile: " + JSON.stringify(data));
-                            resolve(data);
-
+                        $http(req).then(function(profile) {
+                            console.log("Success - profile: " + JSON.stringify(profile));
+                            deviceUser.name = profile.data.name;
+                            deviceUser.loginTime = new Date();
+                            deviceUser.photo = profile.data.picture;
+                            deviceUser.email = profile.data.email;
+                            deviceUser.account = "Google";
+                            deviceUser.login = true;
+                            resolve(deviceUser);
                         }, function(err) {
                             console.log("ERROR - profile: " + JSON.stringify(err));
                             reject(err);
@@ -157,9 +207,15 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
                                 'fields': 'id,name,picture,email'
                             }
                         };
-                        $http(req).then(function(data) {
-                            console.log("Success - profile: " + JSON.stringify(data));
-                            resolve(data);
+                        $http(req).then(function(profile) {
+                            console.log("Success - profile: " + JSON.stringify(profile));
+                            deviceUser.name = profile.data.name;
+                            deviceUser.loginTime = new Date();
+                            deviceUser.photo = profile.data.picture.data.url;
+                            deviceUser.email = profile.data.email;
+                            deviceUser.account = "Facebook";
+                            deviceUser.login = true;
+                            resolve(deviceUser);
                         }, function(err) {
                             console.log("ERROR - profile: " + JSON.stringify(err));
                             reject(err);
@@ -180,16 +236,202 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
         },
         facebook: function() {
             return facebookLogin();
-        }
+        },
+        logout: function() {
+            deviceUser.name = "Anonymous",
+            deviceUser.loginTime = new Date(),
+            deviceUser.photo = "img/randm-slate-blue.jpg",
+            deviceUser.email = "",
+            deviceUser.account = "",
+            deviceUser.login = false
+        },
+        user: deviceUser 
     };
 
 });
 
-randmServices.factory('monitoringDetailDataService', function($http, HealthCheckEndpoint) {
+randmServices.factory('ContactsDataService', function ($http) {
+    var users = [];
+    return {
+        query: function (scenarioName) {
+            var url = "appdata/mock_contacts.json";
+            return $http.get(url, { timeout: 3000 }).then(function (response) {
+                console.log('query - Success', JSON.stringify(response));
+                users = response.data.rows;
+                return users;
+            }, function (err) {
+                console.error('ERR', JSON.stringify(err));
+                // err.status will contain the status code
+            });
+        },
+        getUsers: function() {
+            return users;
+        }
+    }
+});
+randmServices.factory('EmailService', function ($http, $timeout, $compile) {
+    var email;
+    
+    return {
+        sendIncidentSummary: function ($scope) {
+            console.log("Emailing incident summary email");
+            var templateURL = "templates/randm-email.html";
+            $http.get(templateURL).success(function (data, status, headers, config) {
+                $timeout(function () {
+                    console.log(data);
+                    console.log("incident : " +  JSON.stringify($scope.data.email.incident));
+                    console.log("emailto : " + JSON.stringify($scope.data.email.emailto));
+                    var templateRendered = $compile(angular.element(data))($scope);
+                    $scope.$apply();
+                    console.log("templateRendered", templateRendered.html());
+                    // send email
+                    if (cordova.plugins) {
+                        cordova.plugins.email.isAvailable(
+                            function (isAvailable) {
+                                console.log("Email Service available", isAvailable);
+                                var email = {
+                                    to: $scope.data.email.emailto,
+                                    cc: '',
+                                    bcc: ['', ''],
+                                    attachments: [
+                                        // 'file://img/logo.png',
+                                        // 'res://icon.png',
+                                        // 'base64:icon.png//iVBORw0KGgoAAAANSUhEUg...',
+                                        // 'file://README.pdf'
+                                    ],
+                                    subject: 'INC' + $scope.data.incident.incidentnumber + ' ' + $scope.data.incident.summary,
+                                    body: templateRendered.html(),
+                                    isHtml: true
+                                };
+                                cordova.plugins.email.open(email, function callback(argument) {
+                                    // body...
+                                    console.log(argument);
+                                }, this);
+                            }
+                        );
+                    }
+
+                }, 0);
+
+            });
+        }
+    };
+
+});
+randmServices.factory('IncidentService', function ($http, IncidentsEndPoint) {
+
+    var incidents;
+    var cloudantUserName = "catereficemingbitheredis:9726e94b015c66ca60ed807774511f5fd6da5f27";
+
+    var setIncident = function (incident) {
+        var found = false;
+        for (var index = 0; index < incidents.length; index++) {
+            var element = incidents[index];
+            if (element.doc.incidentnumber === incident.incidentnumber) {
+                incidents[index].doc = incident;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            incident._id = response.data.id;
+            incident._rev = response.data.rev;
+            var doc = {};
+            doc["doc"] = incident;
+            incidents.unshift(doc);
+        }
+    };
+
+    return {
+        query: function (incidentnumber) {
+            var req = {
+                method: 'GET',
+                url: IncidentsEndPoint.url + '/_all_docs?include_docs=true&conflicts=true',
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic Y2F0ZXJlZmljZW1pbmdiaXRoZXJlZGlzOjk3MjZlOTRiMDE1YzY2Y2E2MGVkODA3Nzc0NTExZjVmZDZkYTVmMjc="
+                },
+                timeout: 5000
+            }
+            // return $http.get('appdata/mock_incident.json', { timeout: 5000 }).then(function (response) {
+            return $http(req).then(function (response) {
+                console.log('Success - query incidents :', JSON.stringify(response));
+                incidents = response.data.rows;
+                if (typeof incidentnumber !== 'undefined' && incidentnumber !== null) {
+                    console.log("searching for incident : " + incidentnumber);
+                    for (var index = 0; index < incidents.length; index++) {
+                        var element = incidents[index];
+                        console.log("incidentnumber : " + element.doc.incidentnumber);
+                        if (element.doc.incidentnumber === incidentnumber) {
+                            console.log("incident search successful");
+                            var incident = incidents.splice(index, 1);
+                            incident[0].doc.more = true;
+                            console.log("searched incident : " + JSON.stringify(incident[0]));
+                            incidents.unshift(incident[0]);
+                            break;
+                        }
+
+                    }
+                }
+                return incidents;
+            }, function (err) {
+                console.error('ERR - query Incidents : ' + JSON.stringify(err));
+                // err.status will contain the status code
+            });
+        },
+        save: function (incident) {
+            var req = {
+                method: 'POST',
+                url: IncidentsEndPoint.url,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic Y2F0ZXJlZmljZW1pbmdiaXRoZXJlZGlzOjk3MjZlOTRiMDE1YzY2Y2E2MGVkODA3Nzc0NTExZjVmZDZkYTVmMjc="
+                },
+                data: incident
+            }
+
+            $http(req).then(function (response) {
+                console.log('Create incident - Success :' + JSON.stringify(response));
+                setIncident(incident);
+            }, function (err) {
+                console.error('ERR :' + JSON.stringify(err));
+            });
+        },
+        getIncident: function (incidentnumber) {
+            var incident;
+            for (var index = 0; index < incidents.length; index++) {
+                var element = incidents[index];
+                if (element.doc.incidentnumber === incidentnumber) {
+                    incident = element.doc;
+                    break;
+                }
+
+            }
+            return incident;
+            /*            var returnval = incidents.find(function(incident){
+                             return incident.doc.incidentnumber === incidentnumber;
+                        });
+                        console.log(JSON.stringify(returnval.doc));
+                        return returnval.doc;*/
+        },
+        workinfo: function () {
+            return {
+                "summary": "",
+                "notes": "",
+                "date": "",
+                "user": ""
+
+            }
+        },
+        incidents: incidents
+    }
+});
+randmServices.factory('monitoringDetailDataService', function ($http, HealthCheckEndpoint) {
     var viewWindow = new Date();
     viewWindow.setHours(0, 0, 0, 0);
 
-    var viewWindowUnix = function(dateTime, interval) {
+    var viewWindowUnix = function (dateTime, interval) {
         var viewWindowEnd = new Date(dateTime);
         console.log('dateTime : ' + dateTime);
         viewWindowEnd.setHours(viewWindowEnd.getHours() + interval);
@@ -200,7 +442,7 @@ randmServices.factory('monitoringDetailDataService', function($http, HealthCheck
         };
     };
 
-    var helthDataUrl = function(scenarioName, dateTime, interval) {
+    var helthDataUrl = function (scenarioName, dateTime, interval) {
         var helthDataUrl1 = HealthCheckEndpoint.url + "/_search/transactionsByNameAndDate?include_docs=true&limit=200&q=scenarioName:"
         var helthDataUrl2 = "+AND+transactionStartTime:%5B" + viewWindowUnix(dateTime, interval).start + "+TO+" + viewWindowUnix(dateTime, interval).end + "%5D";
 
@@ -210,26 +452,25 @@ randmServices.factory('monitoringDetailDataService', function($http, HealthCheck
     var responseData = {};
 
     return {
-        query: function(scenarioName) {
+        query: function (scenarioName) {
             var url = helthDataUrl(scenarioName, viewWindow, 24);
-            return $http.get(url).then(function(response) {
-                console.log('query - Success', JSON.stringify(response));
+            return $http.get(url).then(function (response) {
+                //console.log('query - Success', JSON.stringify(response));
                 responseData = response;
                 return responseData;
-            }, function(err) {
+            }, function (err) {
                 console.error('ERR', JSON.stringify(err));
-
                 // err.status will contain the status code
             });
         },
-        queryInterval: function(scenarioName, dateTime, interval) {
+        queryInterval: function (scenarioName, dateTime, interval) {
             console.log('queryInterval');
             var url = helthDataUrl(scenarioName, dateTime, interval);
-            return $http.get(url).then(function(response) {
+            return $http.get(url).then(function (response) {
                 //console.log('Success', JSON.stringify(response));
                 responseData = response;
                 return responseData;
-            }, function(err) {
+            }, function (err) {
                 console.error('ERR', err);
                 console.error('ERR', JSON.stringify(err));
 
@@ -241,17 +482,88 @@ randmServices.factory('monitoringDetailDataService', function($http, HealthCheck
 });
 
 
-randmServices.factory('monitoringService', function($http, HealthCheckEndpoint) {
-    var helthDataUrl = HealthCheckEndpoint.url + "/_view/latestTransaction?reduce=true&group_level=1";
-    var responseData = {};
+randmServices.factory('monitoringService', function ($http, $q, HealthCheckEndpoint) {
+    var querying = false;
+    //var helthDataUrl = HealthCheckEndpoint.url + "/_view/latestTransaction?reduce=true&group_level=1";
+    var helthDataUrl = HealthCheckEndpoint.url + "/latestTransaction?reduce=true&group_level=2";
+    //var helthDataUrl = "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/sbr2-result/_design/latestTransactionEVTE/_view/latestTransaction?reduce=true&group_level=2";
+    var monitoringresults  = {
+            EVTE: {
+                SRP: {
+                    failed: 0, 
+                    passed: 0 
+                },
+                BBRP: {
+                    failed: 0,
+                    passed: 0
+                },
+                items:[]
+            },
+            EVTE3: {
+                SRP: {
+                    failed: 0,
+                    passed: 0
+                },
+                BBRP: {
+                    failed: 0,
+                    passed: 0
+                },
+                items:[]
+            },
+            PROD: {
+                SRP: {
+                    failed: 0,
+                    passed: 0                   
+                },
+                BBRP: {
+                    failed: 0,
+                    passed: 0
+                },
+                items:[]
+            }
+        };
+
+
 
     return {
-        query: function() {
-            return $http.get(helthDataUrl, {timeout:5000}).then(function(response) {
-                console.log('Success', JSON.stringify(response));
-                responseData = response;
-                return responseData;
+        query: function () {
+            console.log("monitoring - query");
+            if (querying) {
+                console.log("Monitoring - query is running, return");
+                return $q(function(resolve, reject) {
+                });
+            }
+            querying = true;
+            for (var key in monitoringresults) {
+                monitoringresults[key].SRP.failed = 0;
+                monitoringresults[key].SRP.passed = 0;
+                monitoringresults[key].BBRP.failed = 0;
+                monitoringresults[key].BBRP.passed = 0;
+                monitoringresults[key].items = [];
+            }
+
+            //console.log(JSON.stringify(monitoringresults));
+
+            return $http.get(helthDataUrl, { timeout: 20000 }).then(function (response) {
+                //console.log('Success', JSON.stringify(response));
+                for (var row in response.data.rows) {
+                    response.data.rows[row].value.transactionStartTime =  new Date(response.data.rows[row].value.transactionStartTime)
+                    if (response.data.rows[row].value.status == "FAILED") {
+                        monitoringresults[response.data.rows[row].key[0]][response.data.rows[row].value.requestType].failed++
+                    } else if (response.data.rows[row].value.status == "PASSED") {
+                        monitoringresults[response.data.rows[row].key[0]][response.data.rows[row].value.requestType].passed++
+                    }
+                    monitoringresults[response.data.rows[row].key[0]].items.push(response.data.rows[row]);
+                }
+                //console.info("monitoringresults" + JSON.stringify(monitoringresults));
+                return response;
+            }).finally(function(){
+                console.log("This is finally");
+                querying = false;
             });
+        },
+        getMonitoringResults: function () {
+            return monitoringresults;
         }
     }
 });
@@ -260,20 +572,46 @@ randmServices.factory('monitoringService', function($http, HealthCheckEndpoint) 
 
 
 //factory for processing push notifications.
-randmServices.factory('PushService', function ($http, $state, $localstorage, PushEndpoint) {
+randmServices.factory('PushService', function ($q, $http, $state, $localstorage, AuthenticationService, PushEndpoint) {
 
     var applicationId = "4562bb79-99c7-45b1-a062-cd043431ea6d";
+    var clientSecret = "25ef6b14-2d2b-485a-9fab-f9324f9f99a1";
+    var appSecret = "a864d6c4-6555-4e16-8283-a12520a48aa2";
     var senderID = "1017710972026";
 
     var registrationid;
     var uuid;
 
     var pushDevice = {};
+    var subscriptions = {};
+    var subscribedTags = {};
+    var deviceSubscriptions;
+    var tags;
+    var incidentSubscription = {};
+    var devices;
+    var deviceUsers = {};
+
+    var patt = /INC[0-9]*$/;
 
     //success callback for when a message comes in
     var pushReceived = function (info) {
         console.log("registerListener - ");
         //alert('got a push message! ');
+    };
+
+    var getDevices = function () {
+        var pushServiceURL = PushEndpoint.url + '/' + applicationId + '/devices';
+        $http.get(pushServiceURL).then(function (response) {
+            console.log("Devices : " + JSON.stringify(response.data));
+            devices = response.data.devices;
+            angular.forEach(devices, function (value, key) {
+                deviceUsers[value.deviceId] = value.userId;
+            });
+            console.log("deviceUsers: " + JSON.stringify(deviceUsers));
+        }).catch(function (err) {
+            console.log('Error' + JSON.stringify(err));
+
+        });
     };
 
     var onNotificationConfirm = function (buttonIndex, data) {
@@ -294,12 +632,12 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
     };
 
     var pushRegistered = function (data) {
-        console.info("Push Registered");
+        console.info("Push Registration id: " + data.registrationId);
         registrationid = data.registrationId;
         // Add device to the push service
         var pushServiceURL = PushEndpoint.url + '/' + applicationId + '/devices/' + uuid;
         $http.get(pushServiceURL).then(function (response) {
-            console.log("device already added");
+            console.log("Device already registered for Push notifications");
             console.log(JSON.stringify(response.data));
             pushDevice = response.data;
 
@@ -307,14 +645,83 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
             console.log('Error' + JSON.stringify(err));
 
         });
+    };
+
+    var addDevice = function (user) {
+
+        var req = {
+            method: 'POST',
+            url: PushEndpoint.url + '/' + applicationId + '/devices',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "clientSecret": clientSecret
+            },
+            data: {
+                "createdMode": "randmMobile",
+                "deviceId": uuid,
+                "platform": "G",
+                "token": registrationid,
+                "userId": user.name
+            }
+        };
+        console.log("add device request: " + JSON.stringify(req));
+        return $http(req).then(function (response) {
+            console.log('add device - Success' + JSON.stringify(response));
+            pushDevice = response.data;
+            return response.data;
+        }, function (err) {
+            console.error('ERR' + JSON.stringify(err));
+        });
+    };
+
+    var getDeviceSubcriptions = function (deviceId) {
+        console.info("Retrieve all subscriptions for device: " + deviceId);
+        var req = {
+            method: 'GET',
+            url: PushEndpoint.url + '/' + applicationId + '/subscriptions',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            params: {
+                "deviceId": deviceId
+            },
+            timeout: 5000
+        }
+        return $http(req).then(function (response) {
+            console.log('Device Subscriptions - Success ' + JSON.stringify(response));
+            deviceSubscriptions = response.data;
+            return deviceSubscriptions;
+        }, function (err) {
+            console.error('ERR - Device Subscriptions' + JSON.stringify(err));
+        });
+    };
+
+    var getTags = function () {
+        console.log("Retrieve all tags");
+        var req = {
+            method: 'GET',
+            url: PushEndpoint.url + '/' + applicationId + '/tags',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        }
+        return $http(req).then(function (response) {
+            console.log('Retrieve tags - Success ' + JSON.stringify(response));
+            tags = response.data;
+            return tags;
+        }, function (err) {
+            console.error('ERR' + JSON.stringify(err));
+        });
     }
 
     return {
         initialize: function () {
             console.info('Pushservice  initializing');
             //alert('NOTIFY  initializing');
-            console.info('NOTIFY  Device is ready');
-            console.info(device.uuid);
+            console.info("Device id: " + device.uuid);
             uuid = device.uuid;
             console.info('Registering with GCM');
             var push = PushNotification.init({
@@ -348,49 +755,79 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
             });
 
         },
-        subscribe: function (tagName) {
-            console.info('Subscribe to Push Notifications, tag: ' + tagName);
+        addMobileDevice: function () {
+            console.log("add device");
             console.info('Registrationid: ' + registrationid);
-            if (registrationid == '') {
+            var user = AuthenticationService.user;
+            if (registrationid != '') {
+                // if device already added, check user
+                if (angular.isDefined(pushDevice.deviceId) && user.login) {
+                    console.log("check user and update");
+                } else if (user.login) {
+                    console.log("add device");
+                    addDevice(user);
+                }
+            }
+            else {
+                console.log("Push not registered");
                 // push initialize
                 PushService.initialize();
             }
-            if (registrationid != '') {
-                // if device already added, check user
-                if (angular.isDefined(pushDevice.deviceId)) {
-                    console.log("check user and update");
-                } else {
-                    console.log("add device");
-                    var user = $localstorage.getObject('user');
 
-                    var req = {
-                        method: 'POST',
-                        url: PushEndpoint.url + '/' + applicationId + '/devices',
-                        headers: {
-                            "Accept": "application/json",
-                            "Content-Type": "application/json"
-                        },
-                        data: {
-                            "createdMode": "randmMobile",
-                            "deviceId": uuid,
-                            "platform": "G",
-                            "token": registrationid,
-                            "userId": user.name
-                        }
-                    };
-
-                    $http(req).then(function (response) {
-                        console.log('add device - Success' + JSON.stringify(response));
-                        pushDevice = response.data;
-                    }, function (err) {
-                        console.error('ERR' + JSON.stringify(err));
+        },
+        subscriptions: function () {
+            var deviceId = uuid;
+             if (!window.cordova) {
+                 deviceId = "TestDeviceId";
+             }
+            return $q(function (resolve, reject) {
+                var subscribedTags = {};
+                getDeviceSubcriptions(deviceId).then(function (response) {
+                    angular.forEach(response.subscriptions, function (value, key) {
+                        console.log("Key : " + key);
+                        console.log("tagName : " + value.tagName);
+                        subscribedTags[value.tagName] = true;
                     });
-                }
+                    getTags().then(function (responseData) {
+                        console.log("Tags : " + JSON.stringify(responseData));
+                        subscriptions = responseData.tags;
+                        
+                        angular.forEach(subscriptions, function (value, key) {
+                            if (angular.isDefined(subscribedTags[value.name])) {
+                                value['subscribed'] = true;
+                            }
+                            else {
+                                value['subscribed'] = false;
+                            }
+                            if (patt.test(value.name)) {
+                                incidentSubscription[value.name] = value.subscribed;
+                            }
+                        });
+                        console.log("Subscriptions for tags : " + JSON.stringify(subscriptions));
+                        console.log("Incident subscription : " + JSON.stringify(incidentSubscription));
+                        resolve(subscriptions);
+                    }, function (err) {
+                        console.error('ERR', JSON.stringify(err));
+                        reject(err);
+                    });
 
+                }), function (err) {
+                    console.error('ERR', JSON.stringify(err));
+                    reject(err);
+                };
+            });
+        },
+        subscribe: function (tagName) {
+            console.info('Subscribe to Push Notifications, tag: ' + tagName);
+            //if (registrationid != '' && angular.isDefined(pushDevice.deviceId)) {
+                // subsribing
+                uuid = "TestDeviceId";
                 var req = {
                     method: 'POST',
                     url: PushEndpoint.url + '/' + applicationId + '/subscriptions',
                     headers: {
+                        "appSecret": appSecret,
+                        "clientSecret": clientSecret,
                         "Accept": "application/json",
                         "Content-Type": "application/json"
                     },
@@ -400,21 +837,28 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
                     }
                 }
                 $http(req).then(function (response) {
-                    console.log('Subscription - Success ' + JSON.stringify(response));
+                    console.log('subscribe - Success ' + JSON.stringify(response));
+                     if (patt.test(tagName)) {
+                        incidentSubscription[tagName] = true;
+                    }
                 }, function (err) {
                     console.error('ERR' + JSON.stringify(err));
                 });
 
-            }
+            //}
         },
         unsubscribe: function (tagName) {
             console.info('Unsubscribe to Push Notifications');
+             if (!window.cordova) {
+                 uuid = "TestDeviceId";
+             }
             var req = {
                 method: 'DELETE',
                 url: PushEndpoint.url + '/' + applicationId + '/subscriptions',
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "clientSecret": clientSecret
                 },
                 params: {
                     "deviceId": uuid,
@@ -422,7 +866,7 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
                 }
             }
             $http(req).then(function (response) {
-                console.log('Subscription - Success ' + JSON.stringify(response));
+                console.log('unsubscribe - Success ' + JSON.stringify(response));
 
             }, function (err) {
                 console.error('ERR' + JSON.stringify(err));
@@ -430,11 +874,13 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
 
         },
         subscribers: function (tagName) {
+
             console.log("Get subscriptions by tagName");
             var req = {
                 method: 'GET',
                 url: PushEndpoint.url + '/' + applicationId + '/subscriptions',
                 headers: {
+                    "clientSecret": clientSecret,
                     "Accept": "application/json"
                 },
                 params: {
@@ -443,44 +889,83 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
             }
             return $http(req).then(function (response) {
                 console.log('Get Subscription - Success :' + JSON.stringify(response));
-                return response;
+                var tagSubscriptions = response.data.subscriptions;
+                console.log("tagSubscriptions : " + JSON.stringify(tagSubscriptions));
+                return tagSubscriptions;
             });
         },
-        share: function () {
+        createTag: function (tagName, description) {
+            console.info('Creating Push tag: ' + tagName);
+            var req = {
+                method: 'POST',
+                url: PushEndpoint.url + '/' + applicationId + '/tags',
+                headers: {
+                    "appSecret": appSecret,
+                    "clientSecret": clientSecret,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    "description": description,
+                    "name": tagName
+                }
+            };
+            $http(req).then(function (response) {
+                console.log('Creating Push tag - Success :' + JSON.stringify(response));
+            }, function (err) {
+                console.error('ERR :' + JSON.stringify(err));
+            });
+
+        },
+        deleteTag: function (tagName) {
+            console.info('Deleting Push tag: ' + tagName);
+            var req = {
+                method: 'POST',
+                url: PushEndpoint.url + '/' + applicationId + '/tags',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                params: {
+                    "applicationId": applicationId,
+                    "tagName": tagName,
+                    "appSecret": appSecret
+                }
+            };
+            $http(req).then(function (response) {
+                console.log('Deleting Push tag - Success :' + JSON.stringify(response));
+            }, function (err) {
+                console.error('ERR :' + JSON.stringify(err));
+            });
+        },
+        incidentSubscriptions: function () {
+            return incidentSubscription;
+        },
+        share: function (share) {
             console.info('Share data using Push Notifications');
             var req = {
                 method: 'POST',
                 url: PushEndpoint.url + '/' + applicationId + '/messages',
                 headers: {
-                    "appSecret": "a864d6c4-6555-4e16-8283-a12520a48aa2",
+                    "appSecret": appSecret,
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 data: {
-                    "message": {
-                        "alert": "Notification alert message",
-                        "url": "app.incidents"
-                    },
+                    "message": share.message,
                     "settings": {
                         "apns": {
                             "payload": {
-                                "params": {
-                                    "incidentId": "1234567890"
-                                }
+                                "params": share.params
                             }
                         },
                         "gcm": {
                             "payload": {
-                                "params": {
-                                    "incidentId": "1234567890"
-                                }
+                                "params": share.params
                             }
                         }
                     },
-                    "target": {
-                        "tagNames": ['SHARE']
-                    }
-
+                    "target": share.target
                 }
             };
 
@@ -489,7 +974,36 @@ randmServices.factory('PushService', function ($http, $state, $localstorage, Pus
             }, function (err) {
                 console.error('ERR :' + JSON.stringify(err));
             });
+        },
+        getSubscriptions: function () {
+            return subscriptions;
+        },
+        getDeviceUsers: function () {
+            getDevices();
+            return deviceUsers;
         }
     }
 
+});
+
+randmServices.factory('RefreshService', function ($interval, monitoringService) {
+    var autoRefreshInterval = "0";
+    var autoRefreshCount = "1";
+
+    return {
+        getAutoRefreshInverval: function() {
+            return autoRefreshInterval;
+        },
+        setAutoRefreshInterval: function(refreshInterval) {
+            autoRefreshInterval = refreshInterval*1000;
+        },
+        getAutoRefreshCount: function() {
+            return autoRefreshCount;
+        },
+        setAutoRefreshCount: function(refreshCount) {
+            autoRefreshCount = refreshCount;
+        }
+
+    }
+    
 });

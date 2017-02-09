@@ -4,8 +4,8 @@
     min-height: 102px;
     padding-left: 92px;
     padding-top: 25px;
-    //background-color: #FBFCFE;
-    //background-color: #f5f5f5;
+    /*background-color: #FBFCFE;
+    background-color: #f5f5f5;*/
     background-color: #325C80;
 }
 
@@ -344,6 +344,10 @@
     margin: 10px 5px;
 }
 
+.rm-wide-card .item-toggle {
+    white-space: normal;
+}
+
 .rm-settings .item-divider{
     background-color: #5596E6;
     color:#fff;
@@ -351,6 +355,7 @@
 .rm-settings .item-toggle {
     background-color: #4178bE;
     color: #fff;
+    white-space: normal; 
 }
 
 .rm-settings .toggle .handle {
@@ -368,3 +373,83 @@
 .rm-settings .toggle-small input:checked + .track {
     background: #f5f5f5 none repeat scroll 0 0;
 }
+
+.animate-show {
+  line-height: 20px;
+  opacity: 1;
+  padding: 1px;
+  background: white;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 1px;
+}
+
+.item-icon-left ion-spinner {
+  float: left;
+  margin-left: -2.8em;
+  margin-right: 1em;
+  margin-top: -0.2em;
+ }
+
+.rm-item-spinner {
+ padding-bottom: 8px;
+}
+
+.rm-has-errors {
+  border-bottom: 3px solid #B83E2C;
+}
+ 
+.rm-no-errors {
+  border-bottom: 3px solid green;
+}
+
+.rm-action-sheet .action-sheet-title {
+    background-color: #325c80;
+    color:#fff;
+}
+
+.platform-android .rm-action-sheet .action-sheet .action-sheet-title {
+    color: #fff;
+}
+
+
+.rm-contacts .item {
+background-color: #4178BE;
+ color: #fff;
+}
+
+.rm-contacts .item p {
+    color: #fff;
+}
+
+.rm-contacts a.item:hover, .rm-contacts a.item:focus {
+    background-color: #5596e6;
+}
+
+.col-rm {
+    background-color: #4178BE;
+    color: #fff;
+}
+
+.col-rm-2 {
+    background-color: #5596e6;
+    color: #fff;
+    padding-bottom: 7px;
+    padding-top: 7px;
+}
+
+.col-rm-1 {
+    background-color: #5596e6;
+    color: #fff;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    justify-content: space-between;
+}
+

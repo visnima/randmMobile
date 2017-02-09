@@ -1,80 +1,162 @@
-[{
-	"doc": {
-		"incidentnumber": "1234567890",
-		"tasknumber": "0987654321",
-		"summary": "FVS report not produced as scheduled",
-		"notes": "FVS batch job ran later than usual time. BBRP scheduler wasn't set up properly. Need to reconfigure the scheduler",
-		"impact":"",
-		"status": "Open",
-		"priority":"Medium",
-		"createddate": "2016-01-11T10:15:49.504Z",
-		"createduser": "Gihan Kannangara",
-		"lastmodifiedtime": "",
-		"lastmodifieduser": "",
-		"more":false,
-		"workinfo": [{
-			"summary": "Called ASM Data Capture team",
-			"notes": "Asked task to be created against HP Web Apps. Configuration instructions were emailed",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "Scheduler reconfigured",
-			"notes": "HP Web Apps completed Configuration changes, waiting scheduler to start up and process messages",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "New report generated",
-			"notes": "Scheduler started all messages processed. New report generated",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "Report verified, closing the task",
-			"notes": "Client now receiving latest report. Verified in MEIG. BDV requested. Closing the task",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
+{
+	"total_rows": 3,
+	"offset": 0,
+	"rows": [
+		{
+			"id": "170953844d53de0a3e0b0fdd35cab71b",
+			"key": "170953844d53de0a3e0b0fdd35cab71b",
+			"value": {
+				"rev": "1-3e1f79a6e0da9c8580cde4e82d83bf3b"
+			},
+			"doc": {
+				"_id": "170953844d53de0a3e0b0fdd35cab71b",
+				"_rev": "1-3e1f79a6e0da9c8580cde4e82d83bf3b",
+				"incidentnumber": "INC6786786780",
+				"tasknumber": "TAS2342342340",
+				"summary": "PROD MEIG node1 not responding",
+				"notes": "MEIG node 1 not responding, all traffic goes through node2. Need to check the health status of the node1 and restart MEIG Node1 Application",
+				"impact": "",
+				"status": "Open",
+				"priority": "Low",
+				"env": "EVTE",
+				"createddate": "",
+				"createduser": "Gihan Kannangara",
+				"lastmodifiedtime": "2016-09-15T06:23:13.152Z",
+				"lastmodifieduser": "Anonymous",
+				"more": false,
+				"workinfo": [
+					{
+						"summary": "Called ASM Data Capture team",
+						"notes": "Asked task to be created against HP Web Apps. Health check of the server requested before restarted",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Disk full, move all logs to E drive",
+						"notes": "HP Web Apps completed health check. Old log files moved to E drive and application restarted",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "New traffic goes through node1, closing task",
+						"notes": "Both MEIG nodes up, load balance between nodes. Closing the task",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Task closed",
+						"notes": "",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					}
+				]
+			}
 		},
 		{
-			"summary": "Task closed",
-			"notes": "",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}]
-	}
-},
-{	
-	"doc": {
-		"incidentnumber": "6786786780",
-		"tasknumber": "2342342340",
-		"summary": "PROD MEIG node1 not responding",
-		"notes": "MEIG node 1 not responding, all traffic goes through node2. Need to check the health status of the node1 and restart MEIG Node1 Application",
-		"impact":"",
-		"status": "Open",
-		"priority":"Low",
-		"createddate": "",
-		"createduser": "Gihan Kannangara",
-		"lastmodifiedtime": "",
-		"lastmodifieduser": "",
-		"more":false,
-		"workinfo": [{
-			"summary": "Called ASM Data Capture team",
-			"notes": "Asked task to be created against HP Web Apps. Health check of the server requested before restarted",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "Disk full, move all logs to E drive",
-			"notes": "HP Web Apps completed health check. Old log files moved to E drive and application restarted",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "New traffic goes through node1, closing task",
-			"notes": "Both MEIG nodes up, load balance between nodes. Closing the task",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}, {
-			"summary": "Task closed",
-			"notes": "",
-			"user": "Gihan Kannangara",
-			"date": "2016-01-11T10:15:49.504Z"
-		}]
-	}
-}]
+			"id": "573e5a718a8be1e93977251b9d5f5cf9",
+			"key": "573e5a718a8be1e93977251b9d5f5cf9",
+			"value": {
+				"rev": "2-98706d611e7c9a74afd8224502ea1e48"
+			},
+			"doc": {
+				"_id": "573e5a718a8be1e93977251b9d5f5cf9",
+				"_rev": "2-98706d611e7c9a74afd8224502ea1e48",
+				"incidentnumber": "INC9898986767",
+				"tasknumber": "TAS9898986565",
+				"summary": "PROD CORE SI node1 down",
+				"notes": "CORESI node1 is down, all traffic goes through node2. Both adapter container and asi node showing as inactive",
+				"impact": "",
+				"status": "Open",
+				"priority": "Low",
+				"env": "PROD",
+				"createddate": "",
+				"createduser": "Gihan Kannangara",
+				"lastmodifiedtime": "2016-09-15T06:25:00.240Z",
+				"lastmodifieduser": "Anonymous",
+				"more": false,
+				"workinfo": [
+					{
+						"summary": "Called ASM Data Capture team",
+						"notes": "Asked task to be created against HP Web Apps. Health check of the server requested before restarted",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Disk full, move all logs to E drive",
+						"notes": "HP Web Apps completed health check. Old log files moved to E drive and application restarted",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "New traffic goes through node1, closing task",
+						"notes": "Both MEIG nodes up, load balance between nodes. Closing the task",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Task closed",
+						"notes": "",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					}
+				]
+			}
+		},
+		{
+			"id": "f5e92e883e1aecc340f5b3f80654a618",
+			"key": "f5e92e883e1aecc340f5b3f80654a618",
+			"value": {
+				"rev": "1-1bd4202daf33ba494855a15501bf2e60"
+			},
+			"doc": {
+				"_id": "f5e92e883e1aecc340f5b3f80654a618",
+				"_rev": "1-1bd4202daf33ba494855a15501bf2e60",
+				"incidentnumber": "INC1234567890",
+				"tasknumber": "TAS0987654321",
+				"summary": "FVS report not produced as scheduled",
+				"notes": "FVS batch job ran later than usual time. BBRP scheduler wasn't set up properly. Need to reconfigure the scheduler",
+				"impact": "",
+				"status": "Open",
+				"priority": "Medium",
+				"env": "PROD",
+				"createddate": "2016-01-11T10:15:49.504Z",
+				"createduser": "Gihan Kannangara",
+				"lastmodifiedtime": "2016-09-15T06:22:53.183Z",
+				"lastmodifieduser": "Anonymous",
+				"more": false,
+				"workinfo": [
+					{
+						"summary": "Called ASM Data Capture team",
+						"notes": "Asked task to be created against HP Web Apps. Configuration instructions were emailed",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Scheduler reconfigured",
+						"notes": "HP Web Apps completed Configuration changes, waiting scheduler to start up and process messages",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "New report generated",
+						"notes": "Scheduler started all messages processed. New report generated",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Report verified, closing the task",
+						"notes": "Client now receiving latest report. Verified in MEIG. BDV requested. Closing the task",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					},
+					{
+						"summary": "Task closed",
+						"notes": "",
+						"user": "Gihan Kannangara",
+						"date": "2016-01-11T10:15:49.504Z"
+					}
+				]
+			}
+		}
+	]
+}

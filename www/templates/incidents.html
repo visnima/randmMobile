@@ -15,32 +15,37 @@
         </button>
     </div>
     <ion-content ng-class="{'has-subheader':search}">
+        <ion-refresher pulling-text="Pull to refresh..." refreshing-text="Retrieving Incidents!" on-refresh="doRefresh()"></ion-refresher>
         <div class="list card" ng-repeat="item in data.incidents">
             <div class="item item-avatar rm-search" ng-class="item.doc.more? 'rm-search-more':''" on-tap="onTap(item)">
-                <p><b>INC:{{item.doc.incidentnumber}} / TASK:{{item.doc.tasknumber}}</b></p>
+                <p><b>{{item.doc.incidentnumber}} / {{item.doc.tasknumber}}</b></p>
                 <p><b>Summary: </b>{{item.doc.summary}}</p>
                 <p><b>Notes: </b>{{item.doc.notes}} </p>
+                <p ng-if="item.doc.rootcause != ''"><b>Root cause: </b>{{item.doc.rootcause}} </p>
                 <p><b>Impact: </b>{{item.doc.impact}} </p>
                 <div style="white-space:nowrap;">
-                    <div style="width:50%; display:inline-block; white-space:normal;">
+                    <div style="width:35%; display:inline-block; white-space:normal;">
                         <p><b>Status: </b>{{item.doc.status}}</p>
                     </div>
-                    <div style="width:50%; display:inline-block; white-space:normal;">
+                    <div style="width:38%; display:inline-block; white-space:normal;">
                         <p><b>Priority:</b> {{item.doc.priority}}</p>
+                    </div>
+                    <div style="width:27%; display:inline-block; white-space:normal;">
+                        <p><b>Env:</b> {{item.doc.env}}</p>
                     </div>
                 </div>
                 <p class="rm-ion-chevron-down"><i ng-class="item.doc.more? 'ion-chevron-up':'ion-chevron-down'"></i></p>
             </div>
-            <div class="item item-body" ng-show="item.doc.more">
+            <div class="item item-body" ng-show="item.doc.more"  on-tap="onTap(item)">
                 <div ng-repeat="wi in item.doc.workinfo">
-                    <p>{{wi.date | date:'dd/MM/yyyy HH:mm:ss a':EDT}}<i class="ion-chevron-right"></i>
+                    <p>{{wi.date | date:'dd/MM/yyyy HH:mm:ss a':EDT}} <i class="ion-chevron-right"></i>
                         <br/>
                         <b>{{wi.summary}}</b></br>
                         {{wi.notes}}
                     </p>
                 </div>
             </div>
-            <div class="item item-body" ng-hide="item.doc.more">
+            <div class="item item-body" ng-hide="item.doc.more"  on-tap="onTap(item)">
                 <div ng-repeat="wisum in item.doc.workinfo|limitTo:1">
                     <p>{{wisum.date | date:'dd/MM/yyyy HH:mm:ss a':EDT}} <i class="ion-chevron-right"></i>
                         <br/> {{wisum.summary}}
@@ -52,10 +57,14 @@
             </div>
             <div>
                 <div class="item tabs tabs-secondary tabs-icon-left rm-tabs">
-                    <a class="tab-item" ng-click="emailIncident(item.doc)">
-                        <i class="icon ion-email rm-search-icon"></i> Email
+                    
+                    <a class="tab-item" ng-click="subscribe(item.doc.incidentnumber)" ng-hide="incidentSubscriptions[item.doc.incidentnumber]">
+                        <i class="icon ion-android-checkbox-blank rm-search-icon"></i> Subs
                     </a>
-                    <a class="tab-item" ng-click="showShare(item.doc)">
+                    <a class="tab-item" ng-click="unsubscribe(item.doc.incidentnumber)" ng-show="incidentSubscriptions[item.doc.incidentnumber]">
+                        <i class="icon ion-android-checkbox rm-search-icon"></i> Subs 
+                    </a>
+                    <a class="tab-item" ng-click="showActionsheet(item.doc)">
                         <i class="icon ion-share rm-search-icon"></i> Share
                     </a>
                     <a class="tab-item" ng-click="showIncident(item.doc)">

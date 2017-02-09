@@ -1,4 +1,4 @@
-<ion-view view-title="Monitoring">
+<ion-view view-title="Monitoring More">
     <!--<ion-content>
         <div class="card">
             <div class="item item-divider rm-item-divider item-button-right">
@@ -44,33 +44,38 @@
             </div>
         </div>
     </ion-content>-->
+    
     <div class="bar bar-subheader">
         <div class="button-bar">
-          <a class="button" ng-click="subsystem='SRP'" ng-class="{'active': subsystem =='SRP'}" >SRP</a>
-          <a class="button" ng-click="subsystem='BBRP'" ng-class="{'active': subsystem =='BBRP'}">BBRP</a>
-          <a class="button" ng-click="subsystem= undefined" ng-class="{'active': subsystem ==undefined}">ALL</a>
+            <a class="button" ng-click="search.value.requestType='SRP'" ng-class="{'active': search.value.requestType =='SRP'}">SRP</a>
+            <a class="button" ng-click="search.value.requestType='BBRP'" ng-class="{'active': search.value.requestType =='BBRP'}">BBRP</a>
+            <a class="button" ng-click="search.value.requestType= undefined" ng-class="{'active': search.value.requestType == undefined}">ALL</a>
         </div>
     </div>
-    <ion-content class="has-subheader">
-        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
-        </ion-refresher>
-        <ul class="list" >
-          <li ng-repeat="item in data.rows | orderBy:'-subsystem' | filter: subsystem" item="item">
-            <!--<ion-item ng-repeat="item in data.rows" item="item">-->
-                <a class="item item-icon-left" ui-sref="app.monitoringDetailsScroll({ scenarioName: item.key[0]})">
-                    <i class="icon" ng-class="{'ion-checkmark-circled balanced': item.value.status === 'PASSED', 'ion-close-circled assertive': item.value.status !== 'PASSED'}"></i>
-                    <H3>{{item.scenarioName}} - {{item.subsystem}}</H3>
-                    <p> {{item.value.transactionStartTime | date:'medium'}}</p>
-                    <p class="badge badge-light rm-item-badge"> {{item.value.responseTime}}</p>
-                </a>
-          </li>
+    <ion-content class="has-subheader has-footer">
+     <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+    <ul class="list">
+        <li ng-repeat="item in data.rows | orderBy:'-value.requestType' | filter: search " item="item">
+       <!-- <ion-item ng-repeat="item in data.rows" item="item">-->
+            <a class="item item-icon-left" ui-sref="app.monitoringDetailsScroll({ scenarioName: item.key[0]})">
+                <i class="icon" ng-class="{'ion-checkmark-circled balanced': item.value.status === 'PASSED', 'ion-close-circled assertive': item.value.status !== 'PASSED'}"></i>
+                <H3>{{item.key[1]}} - {{item.value.requestType}}</H3>
+                <p> {{item.value.transactionStartTime | date:'medium'}} - {{item.key[0]}}</p>
+                <p class="badge badge-light rm-item-badge"> {{item.value.responseTime}}</p>
+            </a>
+            </li>
 
-        <!--<ion-list>
-
-        </ion-list>-->
-        </ul>
-        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="25%" icon="ion-loading-c">
-            <ion-spinner></ion-spinner>
-        </ion-infinite-scroll>
+            <!--<ion-list></ion-list>-->
+    </ul>
+    <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="25%" icon="ion-loading-c">
+        <ion-spinner></ion-spinner>
+    </ion-infinite-scroll>
     </ion-content>
+    <ion-footer-bar class="bar button-footer-bar">
+        <div class="button-bar">
+        <a class="button button-balanced" ng-click="search.value.status='PASSED'" ng-class="{'active': search.value.status =='PASSED'}">Passed</a>
+        <a class="button button-stable" ng-click="search.value.status= undefined" ng-class="{'active': search.value.status == undefined}">All</a>
+        <a class="button button-assertive" ng-click="search.value.status='FAILED'" ng-class="{'active': search.value.status =='FAILED'}">Failed</a>
+        </div>
+    </ion-footer-bar>
 </ion-view>

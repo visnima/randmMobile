@@ -8,25 +8,26 @@
     <div class="bar bar-subheader">
         <div class="button-bar">
             <a class="button" ng-class="{'active':isincident}" ng-click="ontoggleincident(isincident)">Incident</a>
-            <a class="button" ng-class="{'active':!isincident}" ng-click="ontoggleincident(isincident)">Work info</a>
+            <a class="button" ng-class="{'active':!isincident}" ng-disabled="addIncident" ng-click="ontoggleincident(isincident)">Work info</a>
         </div>
     </div>
     <ion-pane>
-        <ion-content class="has-header has-subheader rm-has-footer" ng-show="isincident">
-            <form>
+        <ion-content class="has-header has-subheader rm-has-footer"  ng-show="isincident">
+            <form name="form.incidentForm" novalidate="">
                 <ion-list>
-                    <div ng-hide="assess">
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Incident Nummber</span>
-                            <input type="text" placeholder="Incident Number" ng-model="data.incident.incidentnumber">
+                    <div ng-hide="assess.status || assess.env || assess.priority">
+                        <label class="item item-input item-stacked-label" ng-class="{ 'rm-has-errors' : form.incidentForm.incidentnum.$invalid && !form.incidentForm.incidentnum.$pristine, 'rm-no-errors' : form.incidentForm.incidentnum.$valid}">
+                            <span class="input-label">Incident Nummber <strong style="color:#B83E2C" ng-show="form.incidentForm.incidentnum.$invalid">[ * required ]</strong> </span>
+                            <input type="text" name="incidentnum" placeholder="Incident number" ng-model="data.incident.incidentnumber" ng-minlength="8" ng-pattern="/^INC[0-9]*$/" required autofocus>
+                            <span><strong style="color:#B83E2C" ng-show="form.incidentForm.incidentnum.$invalid && !form.incidentForm.incidentnum.$pristine">[ Valid format is: INC123456... ]</strong></span>
                         </label>
                         <label class="item item-input item-stacked-label">
                             <span class="input-label">Task Number (optional)</span>
                             <input type="text" placeholder="Task Number" ng-model="data.incident.tasknumber">
                         </label>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Summary</span>
-                            <textarea rows="1" placeholder="Incident summary or Issue" ng-model="data.incident.summary"></textarea>
+                        <label class="item item-input item-stacked-label" ng-class="{ 'rm-has-errors' : form.incidentForm.summary.$invalid && !form.incidentForm.summary.$pristine, 'rm-no-errors' : form.incidentForm.summary.$valid}">
+                            <span class="input-label">Summary <strong style="color:#B83E2C" ng-show="form.incidentForm.summary.$error.required">[ * required ]</strong></span>
+                            <textarea rows="1" name="summary" placeholder="Incident summary or Issue" ng-model="data.incident.summary" required></textarea>
                         </label>
                         <label class="item item-input item-stacked-label">
                             <span class="input-label">Notes</span>
@@ -34,34 +35,113 @@
                         </label>
                         <label class="item item-input item-stacked-label">
                             <span class="input-label">Impact</span>
-                            <textarea rows="3" placeholder="Impact to the system" ng-model="data.incident.impact"></textarea>
+                            <textarea rows="1" placeholder="Impact to the system" ng-model="data.incident.impact"></textarea>
                         </label>
                     </div>
-                    <div class="item item-divider" ng-click="onAssess()">
+                    <div ng-show="data.incident.status == 'Close'">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Root cause</span>
+                            <textarea rows="3" placeholder="Incident root cause" ng-model="data.incident.rootcause"></textarea>
+                        </label>
+                    </div>
+                    <div class="item item-divider" ng-click="assess.env = !assess.env; scrollTop()">
                         <div>
-                            <div style="width:45%; display:inline-block; vertical-align: middle;">
-                                <p><b>Status: </b>{{data.incident.status}}</p>
+                            <div style="width:85%; display:inline-block; vertical-align: middle;">
+                                <p><b>Environment: </b>{{data.incident.env}}</p>
                             </div>
-                            <div style="width:45%; display:inline-block; vertical-align: middle;">
-                                <p><b>Priority:</b> {{data.incident.priority}}</p>
-                            </div>
-                            <div style="width:10%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess && 'Save' || 'Edit'}}</button></div>
+                            <div style="width:15%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess.env && 'Save' || 'Edit'}}</button></div>
                         </div>
                     </div>
-                    <div ng-show="assess">
+                    <div class="item item-divider" ng-click="assess.status = !assess.status; scrollTop()">
+                        <div>
+                            <div style="width:85%; display:inline-block; vertical-align: middle;">
+                                <p><b>Status: </b>{{data.incident.status}}</p>
+                            </div>
+                            <div style="width:15%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess.status && 'Save' || 'Edit'}}</button></div>
+                        </div>
+
+                    </div>
+                    <div class="item item-divider" ng-click="assess.priority = ! assess.priority; scrollTop()">
+                        <div>
+                            <div style="width:85%; display:inline-block; vertical-align: middle;">
+                                <p><b>Priority: </b>{{data.incident.priority}}</p>
+                            </div>
+                            <div style="width:15%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess.priority && 'Save' || 'Edit'}}</button></div>
+                        </div>
+                    </div>
+                   <!-- <div class="item item-divider" ng-click="onAssess()">
+                        <div>
+                            <div style="width:35%; display:inline-block; vertical-align: middle;">
+                                <p><b>Status: </b>{{data.incident.status}}</p>
+                            </div>
+                            <div style="width:35%; display:inline-block; vertical-align: middle;">
+                                <p><b>Priority:</b> {{data.incident.priority}}</p>
+                            </div>
+                            <div style="width:30%; display:inline-block; vertical-align: middle;">
+                                <p><b>Env:</b> {{data.incident.env}}</p>
+                            </div>
+                            <!--<div style="width:10%; display:inline-block; vertical-align: middle;"><button class="button button-small button-assertive">{{assess && 'Save' || 'Edit'}}</button></div>-->
+                        <!--</div>
+                    </div>-->
+                <div ng-show="assess.env">
+                    <div class="item item-divider" ng-click="assess.env = !assess.env">
+                        <b>Environment</b>: {{data.announcement.env}}
+                    </div>
+                    <ion-list>
+                        <ion-radio ng-repeat="env in data.envList" ng-model="data.incident.env" ng-value="env.value" name="inc-env">
+                            {{env.text}}
+                        </ion-radio>
+                    </ion-list>
+                </div>
+                <div ng-show="assess.priority">
+                    <div class="item item-divider" ng-click="assess.priority = !assess.priority">
+                        <b>Priority</b>: {{data.incident.severity}}
+                    </div>
+                    <ion-list>
+                        <ion-radio ng-repeat="priority in data.incidentPriorityList" ng-value="priority.value" ng-model="data.incident.priority" name="inc-priority">
+                            {{priority.text}}
+                        </ion-radio>
+                    </ion-list>
+                </div>
+                <div ng-show="assess.status">
+                    <div class="item item-divider" ng-click="assess.status = !assess.status">
+                        <b>Status</b> : {{data.incident.status}}
+                    </div>
+                    <ion-list>
+                        <ion-radio ng-repeat="status in data.incidentStatusList" ng-value="status.value" ng-model="data.incident.status" name="inc-status">
+                            {{status.text}}
+                        </ion-radio>
+                    </ion-list>
+                </div>
+
+                    <!--<div ng-show="assess">
                         <div class="item item-divider">
                             <b>Status</b> : {{ data.incident.status }}
                         </div>
-                        <ion-radio ng-repeat="istatus in data.incidentStatusList" ng-value="istatus.value" ng-model="data.incident.status">
-                            {{ istatus.text }}
-                        </ion-radio>
+                        <ion-list>
+                            <ion-radio ng-repeat="istatus in data.incidentStatusList" ng-value="istatus.value" ng-model="data.incident.status" name="status2">
+                                {{ istatus.text }}
+                            </ion-radio>
+                        </ion-list>
+                        <div class="item item-divider">
+                            <b>Environment</b>: {{ data.incident.env }}
+                        </div>
+                        <ion-list>
+                            <ion-radio ng-repeat="ienv in data.envList" ng-value="ienv.value" ng-model="data.incident.env" name="environment2">
+                                {{ ienv.text }}
+                            </ion-radio>
+                        </ion-list>
                         <div class="item item-divider">
                             <b>Priority</b>: {{ data.incident.priority }}
                         </div>
-                        <ion-radio ng-repeat="ipriority in data.incidentPriorityList" ng-value="ipriority.value" ng-model="data.incident.priority" name="server-side">
-                            {{ ipriority.text }}
-                        </ion-radio>
-                    </div>
+                        <ion-list>
+                            <ion-radio ng-repeat="ipriority in data.incidentPriorityList" ng-value="ipriority.value" ng-model="data.incident.priority"
+                                name="priority2">
+                                {{ ipriority.text }}
+                            </ion-radio>
+                        </ion-list>
+
+                    </div>-->
                     <!--<ion-item class="item item-input">
             <button class="button button-small button" ng-click="showTags()">
               Tags
@@ -91,10 +171,10 @@
             </ion-list>
         </ion-content>
     </ion-pane>
-    <ion-footer-bar class="rm-popup-footer bar-light" ng-hide="assess">
+    <ion-footer-bar class="rm-popup-footer bar-light" ng-hide="assess.status || assess.env || assess.priority">
         <div class="rm-popup popup-buttons">
             <button class="button button-block button-positive" ng-click="closeIncident()">Cancel</button>
-            <button class="button button-block button-positive" ng-click="closeIncident(data.incident)">Save</button>
+            <button class="button button-block button-positive" ng-click="form.incidentForm.$valid && closeIncident(data.incident)">Save</button>
         </div>
     </ion-footer-bar>
 </ion-modal-view>

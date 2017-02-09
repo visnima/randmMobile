@@ -1,11 +1,15 @@
-randmControllers.controller("LoginCtrl", function ($scope, $ionicHistory, $localstorage, $ionicLoading, loginService) {
+randmControllers.controller("LoginCtrl", function ($scope, $ionicHistory, $localstorage, $ionicLoading, AuthenticationService, PushService) {
     console.log("LoginController");
 
     var isWebView = ionic.Platform.isWebView();
     console.log("Platform : " + ionic.Platform.platform());
     console.log("isWebView : " + isWebView);
     $scope.loginSuccess = true;
-    console.log("User : " + JSON.stringify($scope.user));
+
+    var updatePushSubscriptions = function() {
+        PushService.addMobileDevice();
+        PushService.getSubscriptions();
+    }
 
     $scope.googleLogin = function () {
         console.log("googleLogin");
@@ -13,18 +17,13 @@ randmControllers.controller("LoginCtrl", function ($scope, $ionicHistory, $local
         if (isWebView) {
             console.log("User : " + JSON.stringify($scope.user.name));
             $ionicLoading.show();
-            var googleLogin = loginService.google();
+            var googleLogin = AuthenticationService.google();
             googleLogin.then(function (profile) {
                 console.log("profile :: " + profile);
-                console.log(JSON.stringify($localstorage.getObject("user")));
-                $scope.user.name = profile.data.name;
-                $scope.user.loginTime = new Date();
-                $scope.user.photo = profile.data.picture;
-                $scope.user.email = profile.data.email;
-                $scope.user.account = "Google";
-                $scope.user.login = true;
+                $scope.user = profile;
                 $scope.loginSuccess = true;
                 $localstorage.setObject("user", $scope.user);
+                updatePushSubscriptions();
                 $ionicLoading.hide();
                 $ionicHistory.goBack();
             }, function (err) {
@@ -39,18 +38,13 @@ randmControllers.controller("LoginCtrl", function ($scope, $ionicHistory, $local
         console.log("facebookLogin");
         if (isWebView) {
             $ionicLoading.show();
-            var facebookLogin = loginService.facebook();
+            var facebookLogin = AuthenticationService.facebook();
             facebookLogin.then(function (profile) {
                 console.log("profile :: " + profile);
-                console.log(JSON.stringify($localstorage.getObject("user")));
-                $scope.user.name = profile.data.name;
-                $scope.user.loginTime = new Date();
-                $scope.user.photo = profile.data.picture.data.url;
-                $scope.user.email = profile.data.email;
-                $scope.user.account = "Facebook";
-                $scope.user.login = true;
+                $scope.user = profile
                 $scope.loginSuccess = true;
                 $localstorage.setObject("user", $scope.user);
+                updatePushSubscriptions();
                 $ionicLoading.hide();
                 $ionicHistory.goBack();
             }, function (err) {
@@ -72,22 +66,23 @@ randmControllers.controller("LoginCtrl", function ($scope, $ionicHistory, $local
     };
 });
 
-randmControllers.controller("LogoutCtrl", function ($scope, $ionicHistory, $localstorage, $state, loginService) {
+randmControllers.controller("LogoutCtrl", function ($scope, $ionicHistory, $localstorage, $state, AuthenticationService) {
     console.log("LogoutCtrl");
     $scope.logout = function () {
-        $scope.user.name = "Anonymous";
-        $scope.user.loginTime = new Date();
-        $scope.user.photo = "img/randm-slate-blue.jpg";
-        $scope.user.email = "";
-        $scope.user.account = "";
-        $scope.user.login = false;
+        AuthenticationService.logout();
+        $scope.user = AuthenticationService.user;
+        console.log(JSON.stringify($scope.user));
         $localstorage.setObject("user", $scope.user);
             
         $ionicHistory.nextViewOptions({
             disableAnimate: true,
             disableBack: true
         });
+        $ionicHistory.clearCache().then(function(){
+            $state.go('app.dashboard');
+        })
+       
 
-        $state.go('app.dashboard');
+        
     }
 });

@@ -1,6 +1,15 @@
-randmServices.factory('loginService', function($http, $location, $window, $q, $timeout) {
+randmServices.factory('AuthenticationService', function($http, $location, $window, $q, $timeout) {
 
-    console.log('loginService');
+    console.log('AuthenticationService'); 
+
+    var deviceUser = {
+        name : "Anonymous",
+        loginTime : new Date(),
+        photo : "img/randm-slate-blue.jpg",
+        email : "",
+        account : "",
+        login : false
+    };
 
     if (!String.prototype.startsWith) {
         String.prototype.startsWith = function(searchString, position) {
@@ -54,10 +63,15 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
                                 'Authorization': 'Bearer ' + data.data.access_token
                             }
                         };
-                        $http(req).then(function(data) {
-                            console.log("Success - profile: " + JSON.stringify(data));
-                            resolve(data);
-
+                        $http(req).then(function(profile) {
+                            console.log("Success - profile: " + JSON.stringify(profile));
+                            deviceUser.name = profile.data.name;
+                            deviceUser.loginTime = new Date();
+                            deviceUser.photo = profile.data.picture;
+                            deviceUser.email = profile.data.email;
+                            deviceUser.account = "Google";
+                            deviceUser.login = true;
+                            resolve(deviceUser);
                         }, function(err) {
                             console.log("ERROR - profile: " + JSON.stringify(err));
                             reject(err);
@@ -105,9 +119,15 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
                                 'fields': 'id,name,picture,email'
                             }
                         };
-                        $http(req).then(function(data) {
-                            console.log("Success - profile: " + JSON.stringify(data));
-                            resolve(data);
+                        $http(req).then(function(profile) {
+                            console.log("Success - profile: " + JSON.stringify(profile));
+                            deviceUser.name = profile.data.name;
+                            deviceUser.loginTime = new Date();
+                            deviceUser.photo = profile.data.picture.data.url;
+                            deviceUser.email = profile.data.email;
+                            deviceUser.account = "Facebook";
+                            deviceUser.login = true;
+                            resolve(deviceUser);
                         }, function(err) {
                             console.log("ERROR - profile: " + JSON.stringify(err));
                             reject(err);
@@ -128,7 +148,16 @@ randmServices.factory('loginService', function($http, $location, $window, $q, $t
         },
         facebook: function() {
             return facebookLogin();
-        }
+        },
+        logout: function() {
+            deviceUser.name = "Anonymous",
+            deviceUser.loginTime = new Date(),
+            deviceUser.photo = "img/randm-slate-blue.jpg",
+            deviceUser.email = "",
+            deviceUser.account = "",
+            deviceUser.login = false
+        },
+        user: deviceUser 
     };
 
 });

@@ -11,12 +11,12 @@ var replace = require("replace");
 var paths = {
     sass: ['./scss/**/*.scss'],
     controllers: ['./www/js/controllers/*.js'],
-    services:['./www/js/services/*.js']
+    services: ['./www/js/services/*.js']
 };
 
 gulp.task('default', ['sass']);
 
-gulp.task('sass', function(done) {
+gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
         .pipe(sass())
         .on('error', sass.logError)
@@ -29,20 +29,20 @@ gulp.task('sass', function(done) {
         .on('end', done);
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
     gulp.watch(paths.controllers, ['concat-controllers']);
     gulp.watch(paths.services, ['concat-services']);
 });
 
-gulp.task('install', ['git-check'], function() {
+gulp.task('install', ['git-check'], function () {
     return bower.commands.install()
-        .on('log', function(data) {
+        .on('log', function (data) {
             gutil.log('bower', gutil.colors.cyan(data.id), data.message);
         });
 });
 
-gulp.task('git-check', function(done) {
+gulp.task('git-check', function (done) {
     if (!sh.which('git')) {
         console.log(
             '  ' + gutil.colors.red('Git is not installed.'),
@@ -55,13 +55,13 @@ gulp.task('git-check', function(done) {
     done();
 });
 
-gulp.task('concat-controllers', function() {
+gulp.task('concat-controllers', function () {
     return gulp.src('./www/js/controllers/*.js')
         .pipe(concat('controllers.js'))
         .pipe(gulp.dest('./www/js/'));
 });
 
-gulp.task('concat-services', function() {
+gulp.task('concat-services', function () {
     return gulp.src('./www/js/services/*.js')
         .pipe(concat('services.js'))
         .pipe(gulp.dest('./www/js/'));
@@ -69,43 +69,62 @@ gulp.task('concat-services', function() {
 
 var replaceFiles = ['./www/js/constants.js'];
 
-gulp.task('add-monitoring-proxy', function() {
-    return replace({
-        regex: "http://imfpush.ng.bluemix.net/imfpush/v1/apps",
-        replacement: "http://localhost:8100/push/api",
-        paths: ["./www/js/constants.js"],
-        recursive: false,
-        silent: false,
-    });
+gulp.task('add-proxy', function () {
+    var replaceVals = [
+        {
+            regex: "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/sbr2-result/_design/latestTransactionEVTE/_view",
+            replacement: "http://localhost:8100/healthcheck/api"
+        },
+        {
+            regex: "https://imfpush.ng.bluemix.net/imfpush/v1/apps",
+            replacement: "http://localhost:8100/push/api"
+        },
+        {
+            regex: "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_incidents",
+            replacement: "http://localhost:8100/incidents/api",
+        },
+        {
+            regex: "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_announcements",
+            replacement: "http://localhost:8100/announcements/api",
+        }];
+
+        for (var index = 0; index < replaceVals.length; index++) {
+            var element = replaceVals[index];
+            replace({
+                    regex: element.regex,
+                    replacement: element.replacement,
+                    paths: ["./www/js/constants.js"],
+                    recursive: false,
+                    silent: false,
+            });
+         };
 });
 
-gulp.task('add-proxy', ['add-monitoring-proxy'], function() {
-    return replace({
-        regex: "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/result/_design/views",
-        replacement: "http://localhost:8100/healthcheck/api",
-        paths: ["./www/js/constants.js"],
-        recursive: false,
-        silent: false,
-    });
-});
-
-gulp.task('remove-monitoring-proxy', function() {
+gulp.task('remove-monitoring-proxy', function () {
     return replace({
         regex: "http://localhost:8100/push/api",
-        replacement: "http://imfpush.ng.bluemix.net/imfpush/v1/apps/",
+        replacement: "https://imfpush.ng.bluemix.net/imfpush/v1/apps",
         paths: replaceFiles,
         recursive: false,
         silent: false,
     });
 });
 
-gulp.task('remove-proxy', ['remove-monitoring-proxy'], function() {
-    return replace({
-        regex: "http://localhost:8100/healthcheck/api",
-        replacement: "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/result/_design/views",
-        paths: replaceFiles,
-        recursive: false,
-        silent: false,
+gulp.task('remove-proxy', ['remove-monitoring-proxy'], function () {
+    var replaceVals = [
+        { regex: "http://localhost:8100/healthcheck/api", replacement: "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/sbr2-result/_design/latestTransactionEVTE/_view" },
+        { regex: "http://localhost:8100/incidents/api", replacement: "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_incidents" },
+        { regex: "http://localhost:8100/announcements/api", replacement: "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_announcements" }
+    ];
+    for (var index = 0; index < replaceVals.length; index++) {
+        var element = replaceVals[index];
+        replace({
+            regex: element.regex,
+            replacement: element.replacement,
+            paths: replaceFiles,
+            recursive: false,
+            silent: false,
+        });
 
-    });
+    }
 });

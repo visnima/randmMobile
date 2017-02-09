@@ -1,21 +1,22 @@
-randmControllers.controller('SettingsCtrl', function($q, $scope, $localstorage, PushService) {
+randmControllers.controller('SettingsCtrl', function($scope, RMSelect, RefreshService) {
 
 	console.log("SettingsCtrl");
-    $scope.push = {'evte':false, 'prod':true, 'share':false};
-    $localstorage.setObject('PUSH' , $scope.push);
-    $scope.push = $localstorage.getObject('PUSH');
-    console.log("Push settings: " + JSON.stringify($scope.push));
+	$scope.data = {};
 
-    $scope.pushNotificationChange = function(tagName, checked) {
-        console.log("Push change : " + JSON.stringify($scope.push));
-        $localstorage.setObject('PUSH' , $scope.push);
-        if (checked) {
-            console.log("subscribe to push");
-            PushService.subscribe(tagName);
-        } else {
-            console.log("unsubscribe to push");
-            PushService.unsubscribe(tagName);
-        }
+	$scope.data.refreshIntervalSelect = RMSelect.refreshintervallist;
+	$scope.data.refreshCountSelect = RMSelect.refreshCountlist;
+	console.log(JSON.stringify($scope.data.refreshIntervalSelect));
 
-    };
+	$scope.onChangeRefreshCount = function() {
+		console.log("RefreshCount:" + $scope.data.autoRefreshCount);
+		RefreshService.setAutoRefreshCount($scope.data.autoRefreshCount);
+	}
+
+	$scope.onChangeRefreshInterval = function() {
+		console.log("AutoRefreshInterval:" + $scope.data.autoRefreshInterval);
+		RefreshService.setAutoRefreshInterval($scope.data.autoRefreshInterval);
+	}
+
+	$scope.data.autoRefreshCount = RefreshService.getAutoRefreshCount();
+	$scope.data.autoRefreshInterval = RefreshService.getAutoRefreshInverval();
 });

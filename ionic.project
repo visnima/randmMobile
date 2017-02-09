@@ -14,11 +14,19 @@
   "proxies": [
     {
       "path": "/healthcheck/api",
-      "proxyUrl": "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/result/_design/views"
+      "proxyUrl": "https://ddb2d6fd-f74e-47f0-a758-b72fba205934-bluemix.cloudant.com/sbr2-result/_design/latestTransactionEVTE/_view"
     },
     {
       "path": "/push/api",
       "proxyUrl": "http://imfpush.ng.bluemix.net/imfpush/v1/apps"
+    },
+    {
+      "path": "/incidents/api",
+      "proxyUrl": "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_incidents"
+    },
+    {
+      "path": "/announcements/api",
+      "proxyUrl": "https://56939a1c-0f09-4532-9afa-51f16eb2b2fc-bluemix.cloudant.com/randm_announcements"
     }
   ]
 }

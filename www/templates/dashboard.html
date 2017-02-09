@@ -1,15 +1,14 @@
 <ion-view view-title="Home">
-    <ion-content class="rm-background" scroll="false">
+    <ion-content class="rm-background" >
+        <ion-refresher pulling-text="Pull to refresh..." refreshing-text="{{data.dashboard.loading}}" on-refresh="pullRefresh()"></ion-refresher>
         <div class="card rm-wide-card">
             <div class="item">
-                <a class="item item-avatar rm-dashboard-avatar rm-colour-blue" href="#">
+                <div class="item item-avatar rm-dashboard-avatar rm-colour-blue" href="#">
                     <img src="img/randm-slate-blue.jpg">
+                     <p>R&M on-call</p>
                     <h2>{{data.dashboard.oncalluser}}</h2>
-                    <p>I'm keeping an eye!.</p>
-                </a>
-                <a href="#" class="item item-icon-left">
-                    <i class="icon ion-sad"></i> {{data.dashboard.oncallimotion}}
-                </a>
+                </div>
+                <ion-toggle ng-model="data.autoRefreshMode" toggle-class="toggle-calm" ng-change="autoRefreshChanged()"><strong>{{data.refreshtext}}</strong></ion-toggle>
             </div>
         </div>
         <div class="card rm-card rm-wide-card">
@@ -19,17 +18,17 @@
             <div class="item item-text-wrap">
                 <div class="row rm-dashboard-card rm-colour-purple">
                     <div class="col">
-                        <a class="tab-item tabs-icon-left" ui-sref="{{data.dashboard.evtestate.notifications? 'app.notifications':'.'}}">
+                        <a class="tab-item tabs-icon-left" ng-class="{'tab-item-active':data.dashboard.prodstate.notifications}" ng-click="changeSate('app.notifications',data.dashboard.evtestate.notifications)">
                             <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.notifications">{{data.dashboard.evtestate.notifications}}</span></i>Notification
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.incidents}" ui-sref="{{data.dashboard.evtestate.incidents?'app.incidents':'.'}}">
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.incidents}" ng-click="changeSate('app.incidents',data.dashboard.evtestate.incidents)">
                             <i class="icon ion-android-warning" ><span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.incidents">{{data.dashboard.evtestate.incidents}}</span></i>Incident
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.monitoring}"  ui-sref="{{data.dashboard.evtestate.monitoring?'app.monitoring':'.'}}">
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.evtestate.monitoring}"  ng-click="changeSate('app.monitoringSummary',data.dashboard.evtestate.monitoring)">
                             <i class="icon ion-stats-bars"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.evtestate.monitoring">{{data.dashboard.evtestate.monitoring}}</span></i>Monitoring
                         </a>
                     </div>
@@ -43,17 +42,17 @@
             <div class="item item-text-wrap">
                 <div class="row rm-dashboard-card rm-colour-teal">
                     <div class="col">
-                        <a class="tab-item tabs-icon-left" ui-sref="{{data.dashboard.prodstate.notifications? 'app.notifications':'.'}}">
-                            <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.notifications">{{data.dashboard.pordtate.notifications}}</span></i>Notification
+                        <a class="tab-item tabs-icon-left" ng-class="{'tab-item-active':data.dashboard.prodstate.notifications}" ng-click="changeSate('app.announcements', data.dashboard.prodstate.notifications)">
+                            <i class="icon ion-android-notifications"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.notifications">{{data.dashboard.prodstate.notifications}}</span></i>Notification
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.incidents}" ui-sref="{{data.dashboard.prodstate.incidents?'app.incidents':'.'}}">
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.incidents}" ng-click="changeSate('app.incidents', data.dashboard.prodstate.incidents)">
                             <i class="icon ion-android-warning" ><span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.incidents">{{data.dashboard.prodstate.incidents}}</span></i>Incident
                         </a>
                     </div>
                     <div class="col">
-                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.monitoring}"  ui-sref="{{data.dashboard.prodstate.monitoring?'app.monitoring':'.'}}">
+                        <a class="tab-item" ng-class="{'tab-item-active':data.dashboard.prodstate.monitoring}"  ng-click="changeState('app/monitoringSummary',data.dashboard.prodstate.monitoring)">
                             <i class="icon ion-stats-bars"> <span class="rmbadge badge-assertive" ng-show="data.dashboard.prodstate.monitoring">{{data.dashboard.prodstate.monitoring}}</span></i>Monitoring
                         </a>
                     </div>

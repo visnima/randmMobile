@@ -1,4 +1,4 @@
-var randmServices = angular.module('randm.services', ['randm.constants']);
+var randmServices = angular.module('randm.services', ['randm.constants', 'randm.directives']);
 
 randmServices.factory('$localstorage', ['$window', function($window) {
     return {

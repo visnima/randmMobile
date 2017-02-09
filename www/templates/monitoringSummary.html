@@ -1,0 +1,98 @@
+<ion-view view-title="Monitoring Summary">
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." refreshing-text="Retrieving Incidents!" on-refresh="doRefresh()"></ion-refresher>
+        <ul class="list">
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo col-rm-1"><strong>PROD</strong>
+                            <a class="button button-small icon-right ion-chevron-right button-calm" ui-sref="app.monitoring({env:'PROD'})"><strong> </strong></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>SRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.PROD.SRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.PROD.SRP.failed}}</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>BBRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.PROD.BBRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.PROD.BBRP.failed}}</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo col-rm-1"><strong>EVTE</strong>
+                            <a class="button button-small icon-right ion-chevron-right button-calm" ui-sref="app.monitoring({env:'EVTE'})"><strong> </strong></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>SRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.EVTE.SRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.EVTE.SRP.failed}}</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>BBRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.EVTE.BBRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.EVTE.BBRP.failed}}</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo col-rm-1"><strong>EVTE3</strong>
+                            <a class="button button-small icon-right ion-chevron-right button-calm" ui-sref="app.monitoring({env:'EVTE3'})"><strong> </strong></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>SRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.EVTE3.SRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.EVTE3.SRP.failed}}</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="col-demo"><strong>BBRP</strong></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-balanced">{{monitoringresults.EVTE3.BBRP.passed}}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col-demo"><span class="badge badge-assertive">{{monitoringresults.EVTE3.BBRP.failed}}</span></div>
+                    </div>
+                </div>
+            </div>
+    </ion-content>
+</ion-view>

@@ -2,34 +2,38 @@
     {
         "doc": {
             "title": "EVTE unavailable",
-            "announcemnt": "Please be advised that ebMS3 services in ATO EVTE are currently unavailable. This is being investigated as a high priority. (Infra 1851506)",
+            "announcement": "Please be advised that ebMS3 services in ATO EVTE are currently unavailable. This is being investigated as a high priority. (Infra 1851506)",
+            "scheduled":"2016-08-12T22:42:48.093Z",
             "env": "EVTE",
             "severity":"High",
+            "status": "Open",
             "user": "Gihan Kannangara",
-            "lastmodified": "2016-01-11T10:15:49.504Z",
-            "status": "active"
+            "lastmodified": "2016-01-11T10:15:49.504Z"
+            
         }
     },
     {
         "doc": {
             "title": "PROD Running slow",
-            "announcemnt": "Please be advised that ebMS3 services in ATO PROD are currently running slow. Some transactions are timing out. This is being investigated as a high priority. (Infra 1851506)",
+            "announcement": "Please be advised that ebMS3 services in ATO PROD are currently running slow. Some transactions are timing out. This is being investigated as a high priority. (Infra 1851506)",
+            "scheduled":"2016-01-11T10:15:49.504Z",
             "env": "PROD",
+            "status": "Open",
             "severity":"Medium",
             "user": "Gihan Kannangara",
-            "lastmodified": "2016-01-11T10:15:49.504Z",
-            "status": "active"
+            "lastmodified": "2016-01-11T10:15:49.504Z"            
         }
     },
     {
         "doc": {
             "title": "PROD Schedule Maintenance",
-            "announcemnt": "Please be advised that ebMS3 services in ATO PROD are not available due to schedule Maintenance. (Infra 1851506)",
+            "announcement": "Please be advised that ebMS3 services in ATO PROD are not available due to schedule Maintenance. (Infra 1851506)",
+            "scheduled":"2016-01-11T10:15:49.504Z",
             "env": "PROD",
+            "status": "Open",
             "severity":"Low",
             "user": "Gihan Kannangara",
-            "lastmodified": "2016-01-11T10:15:49.504Z",
-            "status": "active"
+            "lastmodified": "2016-01-11T10:15:49.504Z"
         }
     }
 ]
